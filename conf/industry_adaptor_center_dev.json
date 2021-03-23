@@ -24,5 +24,7 @@
 
     ],
     "env":"dev",
-    "connect_method":"MQTT"
+    "connect_method":"MQTT",
+    "logic_id":"XXX",
+    "mqtt_password":"xxx"
 }

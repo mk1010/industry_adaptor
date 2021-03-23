@@ -1,9 +1,5 @@
 package service
 
-import (
-	
-)
-
 type RocketmqConfig struct {
 	Name            string `json:"name"`
 	Enable          bool   `json:"enable"`
@@ -13,4 +9,8 @@ type RocketmqConfig struct {
 	SubscribeTag    string `json:"subscribeTag"`
 	NameSrv         string `json:"nameSrv"`
 	GroupName       string `json:"groupName"`
+}
+
+func RmqInit() error {
+	return nil
 }

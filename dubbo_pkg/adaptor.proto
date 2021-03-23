@@ -1,0 +1,9 @@
+syntax = "proto3";
+message MQTTBrokerRequest {
+  string logic_id = 1;
+  string password = 2;
+}
+
+message MQTTBrokerResponse{
+  
+}
