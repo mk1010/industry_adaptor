@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package dubbo_pkg
+package nclink
 
 import (
 	"context"

@@ -19,7 +19,7 @@ package main
 
 import (
 	"context"
-	"github/mk1010/industry_adaptor/dubbo_pkg"
+	"github/mk1010/industry_adaptor/nclink"
 	"os"
 	"time"
 
@@ -38,20 +38,20 @@ import (
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
-var userProvider = new(dubbo_pkg.UserProvider)
+var userProvider = new(nclink.UserProvider)
 
 func init() {
 	dubboConfig.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&dubbo_pkg.User{})
+	hessian.RegisterPOJO(&nclink.User{})
 }
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	hessian.RegisterPOJO(&dubbo_pkg.User{})
+	hessian.RegisterPOJO(&nclink.User{})
 	dubboConfig.Load()
 	time.Sleep(3 * time.Second)
 	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &dubbo_pkg.User{}
+	user := &nclink.User{}
 	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
 	if err != nil {
 		gxlog.CError("error: %v\n", err)

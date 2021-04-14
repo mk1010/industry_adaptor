@@ -15,12 +15,9 @@ var MeshClient MQTT.Client
 func Init() (err error) {
 	serviceInitOnce.Do(func() {
 		switch config.ConfInstance.ConnectMethod {
-		case "MQTT":
-			err = mqttInit()
-			if err != nil {
-				return
-			}
 		case "DUBBO":
+			// todo
+		case "HTTP":
 			// todo
 		default:
 			panic("Error ConnectMethod")

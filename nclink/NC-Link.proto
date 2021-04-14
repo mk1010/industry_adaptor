@@ -1,0 +1,119 @@
+syntax = "proto3";
+package nclink;
+
+import "google/protobuf/any.proto";
+
+service NCLinkAuthService{
+  rpc NCLinkAuth(NCLinkAuthReq) returns (NCLinkAuthResp);
+}
+
+service NCLinkSubscribeService{
+  rpc NCLinkSubscribe(NCLinkTopicSub) returns (stream NCLinkTopicMessage);
+}
+
+message NCLinkTopicSub{
+  string topic =1;
+  repeated string tags =2;
+}
+
+message NCLinkTopicMessage{
+  uint32 type =1;
+  bytes payload =2;
+}
+
+message NCLinkAuthReq {
+  string logic_id = 1;
+  string password = 2;
+}
+
+message NCLinkAuthResp {
+  NCLinkBaseResp base_resp =1;
+}
+
+message NCLinkBaseResp{
+  uint32 status_code =1;
+  string detail =2;
+}
+
+message NCLinkDataMessage{
+  string data_id =1; //全局唯一 参考uuid
+  string device_id =2;
+  string component_id =3;
+  string data_item_id =4;
+  int64 unix_time_ms =5;//不附加时区
+  bytes payload =6;
+}
+
+
+//元数据描述，由IDL定义进行参考
+message NCLinkAdaptor{
+  string adaptor_id =1;
+  string name =2;
+  string adaptor_type =3;
+  string description =4;
+  repeated string device_id =5;
+  repeated bytes device_config =6; //由用户自定义
+}
+
+message NCLinkDevice{
+  string device_id =1;
+  string name =2;
+  string device_type =3;
+  string description =4;
+  string device_group =5;
+  repeated string component_id =6;
+  repeated bytes component_config =7;
+  repeated NCLinkDataItem data_item =8;
+}
+
+message NCLinkComponent{
+  string component_id =1;
+  string name =2;
+  string component_type =3;
+  string description =4;
+  repeated NCLinkDataInfo data_info=5;
+}
+
+message NCLinkDataInfo{
+  NCLinkDataItem data_item=1;
+  NCLinkSampleInfo sample_info=2;
+}
+
+message NCLinkDataItem{
+  string data_item_id =1;
+  string name =2;
+  string data_item_type =3;
+  string description =4;
+  map<string,data_kind> data_type =5;
+}
+
+message NCLinkDataTypeUnit{
+  data_kind kind =1;
+  string unit =2;
+}
+
+message NCLinkSampleInfo{
+  string sample_info_id =1;
+  string sample_info_type =2;
+  int64 sampling_period =3;//单位毫秒 即每xx毫秒进行一次处理 如果设备为自主采样 无法设置该值会被忽略
+  int64 upload_period=4;
+}
+
+enum data_kind{
+  Invalid =0;
+	Bool =1;
+	Int8 =2;
+	Int16 =3;
+	Int32 =4;
+	Int64 =5;
+	Uint =6;
+	Uint8 =7;
+	Uint16 =8;
+	Uint32 =9;
+	Uint64 =10;
+	Float32 =11;
+	Float64 =12;
+	Complex64 =13;
+	Complex128 =14;
+  String =15;
+}
