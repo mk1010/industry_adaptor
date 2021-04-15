@@ -7,7 +7,6 @@ import (
 	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
-	_ "github.com/golang/protobuf/ptypes/any"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -98,6 +97,31 @@ func (DataKind) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_bcf64de72183dbd0, []int{0}
 }
 
+type TopicMessageKind int32
+
+const (
+	TopicMessageKind_SetMeta TopicMessageKind = 0
+	TopicMessageKind_GetMeta TopicMessageKind = 1
+)
+
+var TopicMessageKind_name = map[int32]string{
+	0: "SetMeta",
+	1: "GetMeta",
+}
+
+var TopicMessageKind_value = map[string]int32{
+	"SetMeta": 0,
+	"GetMeta": 1,
+}
+
+func (x TopicMessageKind) String() string {
+	return proto.EnumName(TopicMessageKind_name, int32(x))
+}
+
+func (TopicMessageKind) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_bcf64de72183dbd0, []int{1}
+}
+
 type NCLinkTopicSub struct {
 	Topic                string   `protobuf:"bytes,1,opt,name=topic,proto3" json:"topic,omitempty"`
 	Tags                 []string `protobuf:"bytes,2,rep,name=tags,proto3" json:"tags,omitempty"`
@@ -146,11 +170,11 @@ func (m *NCLinkTopicSub) GetTags() []string {
 }
 
 type NCLinkTopicMessage struct {
-	Type                 uint32   `protobuf:"varint,1,opt,name=type,proto3" json:"type,omitempty"`
-	Payload              []byte   `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	MessageKind          TopicMessageKind `protobuf:"varint,1,opt,name=message_kind,json=messageKind,proto3,enum=nclink.TopicMessageKind" json:"message_kind,omitempty"`
+	Payload              []byte           `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
 }
 
 func (m *NCLinkTopicMessage) Reset()         { *m = NCLinkTopicMessage{} }
@@ -178,11 +202,11 @@ func (m *NCLinkTopicMessage) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_NCLinkTopicMessage proto.InternalMessageInfo
 
-func (m *NCLinkTopicMessage) GetType() uint32 {
+func (m *NCLinkTopicMessage) GetMessageKind() TopicMessageKind {
 	if m != nil {
-		return m.Type
+		return m.MessageKind
 	}
-	return 0
+	return TopicMessageKind_SetMeta
 }
 
 func (m *NCLinkTopicMessage) GetPayload() []byte {
@@ -404,6 +428,156 @@ func (m *NCLinkDataMessage) GetPayload() []byte {
 	return nil
 }
 
+type NCLinkMetaDataReq struct {
+	AdaptorId            []string `protobuf:"bytes,1,rep,name=adaptor_id,json=adaptorId,proto3" json:"adaptor_id,omitempty"`
+	DeviceId             []string `protobuf:"bytes,2,rep,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+	ComponentId          []string `protobuf:"bytes,3,rep,name=component_id,json=componentId,proto3" json:"component_id,omitempty"`
+	DataItemId           []string `protobuf:"bytes,4,rep,name=data_item_id,json=dataItemId,proto3" json:"data_item_id,omitempty"`
+	SampleInfoId         []string `protobuf:"bytes,5,rep,name=sample_info_id,json=sampleInfoId,proto3" json:"sample_info_id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *NCLinkMetaDataReq) Reset()         { *m = NCLinkMetaDataReq{} }
+func (m *NCLinkMetaDataReq) String() string { return proto.CompactTextString(m) }
+func (*NCLinkMetaDataReq) ProtoMessage()    {}
+func (*NCLinkMetaDataReq) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bcf64de72183dbd0, []int{6}
+}
+
+func (m *NCLinkMetaDataReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_NCLinkMetaDataReq.Unmarshal(m, b)
+}
+func (m *NCLinkMetaDataReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_NCLinkMetaDataReq.Marshal(b, m, deterministic)
+}
+func (m *NCLinkMetaDataReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NCLinkMetaDataReq.Merge(m, src)
+}
+func (m *NCLinkMetaDataReq) XXX_Size() int {
+	return xxx_messageInfo_NCLinkMetaDataReq.Size(m)
+}
+func (m *NCLinkMetaDataReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_NCLinkMetaDataReq.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NCLinkMetaDataReq proto.InternalMessageInfo
+
+func (m *NCLinkMetaDataReq) GetAdaptorId() []string {
+	if m != nil {
+		return m.AdaptorId
+	}
+	return nil
+}
+
+func (m *NCLinkMetaDataReq) GetDeviceId() []string {
+	if m != nil {
+		return m.DeviceId
+	}
+	return nil
+}
+
+func (m *NCLinkMetaDataReq) GetComponentId() []string {
+	if m != nil {
+		return m.ComponentId
+	}
+	return nil
+}
+
+func (m *NCLinkMetaDataReq) GetDataItemId() []string {
+	if m != nil {
+		return m.DataItemId
+	}
+	return nil
+}
+
+func (m *NCLinkMetaDataReq) GetSampleInfoId() []string {
+	if m != nil {
+		return m.SampleInfoId
+	}
+	return nil
+}
+
+type NCLinkMetaDataResp struct {
+	AdaptorId            []string        `protobuf:"bytes,1,rep,name=adaptor_id,json=adaptorId,proto3" json:"adaptor_id,omitempty"`
+	DeviceId             []string        `protobuf:"bytes,2,rep,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+	ComponentId          []string        `protobuf:"bytes,3,rep,name=component_id,json=componentId,proto3" json:"component_id,omitempty"`
+	DataItemId           []string        `protobuf:"bytes,4,rep,name=data_item_id,json=dataItemId,proto3" json:"data_item_id,omitempty"`
+	SampleInfoId         []string        `protobuf:"bytes,5,rep,name=sample_info_id,json=sampleInfoId,proto3" json:"sample_info_id,omitempty"`
+	BaseResp             *NCLinkBaseResp `protobuf:"bytes,6,opt,name=base_resp,json=baseResp,proto3" json:"base_resp,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
+}
+
+func (m *NCLinkMetaDataResp) Reset()         { *m = NCLinkMetaDataResp{} }
+func (m *NCLinkMetaDataResp) String() string { return proto.CompactTextString(m) }
+func (*NCLinkMetaDataResp) ProtoMessage()    {}
+func (*NCLinkMetaDataResp) Descriptor() ([]byte, []int) {
+	return fileDescriptor_bcf64de72183dbd0, []int{7}
+}
+
+func (m *NCLinkMetaDataResp) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_NCLinkMetaDataResp.Unmarshal(m, b)
+}
+func (m *NCLinkMetaDataResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_NCLinkMetaDataResp.Marshal(b, m, deterministic)
+}
+func (m *NCLinkMetaDataResp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NCLinkMetaDataResp.Merge(m, src)
+}
+func (m *NCLinkMetaDataResp) XXX_Size() int {
+	return xxx_messageInfo_NCLinkMetaDataResp.Size(m)
+}
+func (m *NCLinkMetaDataResp) XXX_DiscardUnknown() {
+	xxx_messageInfo_NCLinkMetaDataResp.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NCLinkMetaDataResp proto.InternalMessageInfo
+
+func (m *NCLinkMetaDataResp) GetAdaptorId() []string {
+	if m != nil {
+		return m.AdaptorId
+	}
+	return nil
+}
+
+func (m *NCLinkMetaDataResp) GetDeviceId() []string {
+	if m != nil {
+		return m.DeviceId
+	}
+	return nil
+}
+
+func (m *NCLinkMetaDataResp) GetComponentId() []string {
+	if m != nil {
+		return m.ComponentId
+	}
+	return nil
+}
+
+func (m *NCLinkMetaDataResp) GetDataItemId() []string {
+	if m != nil {
+		return m.DataItemId
+	}
+	return nil
+}
+
+func (m *NCLinkMetaDataResp) GetSampleInfoId() []string {
+	if m != nil {
+		return m.SampleInfoId
+	}
+	return nil
+}
+
+func (m *NCLinkMetaDataResp) GetBaseResp() *NCLinkBaseResp {
+	if m != nil {
+		return m.BaseResp
+	}
+	return nil
+}
+
 //元数据描述，由IDL定义进行参考
 type NCLinkAdaptor struct {
 	AdaptorId            string   `protobuf:"bytes,1,opt,name=adaptor_id,json=adaptorId,proto3" json:"adaptor_id,omitempty"`
@@ -421,7 +595,7 @@ func (m *NCLinkAdaptor) Reset()         { *m = NCLinkAdaptor{} }
 func (m *NCLinkAdaptor) String() string { return proto.CompactTextString(m) }
 func (*NCLinkAdaptor) ProtoMessage()    {}
 func (*NCLinkAdaptor) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bcf64de72183dbd0, []int{6}
+	return fileDescriptor_bcf64de72183dbd0, []int{8}
 }
 
 func (m *NCLinkAdaptor) XXX_Unmarshal(b []byte) error {
@@ -502,7 +676,7 @@ func (m *NCLinkDevice) Reset()         { *m = NCLinkDevice{} }
 func (m *NCLinkDevice) String() string { return proto.CompactTextString(m) }
 func (*NCLinkDevice) ProtoMessage()    {}
 func (*NCLinkDevice) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bcf64de72183dbd0, []int{7}
+	return fileDescriptor_bcf64de72183dbd0, []int{9}
 }
 
 func (m *NCLinkDevice) XXX_Unmarshal(b []byte) error {
@@ -594,7 +768,7 @@ func (m *NCLinkComponent) Reset()         { *m = NCLinkComponent{} }
 func (m *NCLinkComponent) String() string { return proto.CompactTextString(m) }
 func (*NCLinkComponent) ProtoMessage()    {}
 func (*NCLinkComponent) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bcf64de72183dbd0, []int{8}
+	return fileDescriptor_bcf64de72183dbd0, []int{10}
 }
 
 func (m *NCLinkComponent) XXX_Unmarshal(b []byte) error {
@@ -662,7 +836,7 @@ func (m *NCLinkDataInfo) Reset()         { *m = NCLinkDataInfo{} }
 func (m *NCLinkDataInfo) String() string { return proto.CompactTextString(m) }
 func (*NCLinkDataInfo) ProtoMessage()    {}
 func (*NCLinkDataInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bcf64de72183dbd0, []int{9}
+	return fileDescriptor_bcf64de72183dbd0, []int{11}
 }
 
 func (m *NCLinkDataInfo) XXX_Unmarshal(b []byte) error {
@@ -712,7 +886,7 @@ func (m *NCLinkDataItem) Reset()         { *m = NCLinkDataItem{} }
 func (m *NCLinkDataItem) String() string { return proto.CompactTextString(m) }
 func (*NCLinkDataItem) ProtoMessage()    {}
 func (*NCLinkDataItem) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bcf64de72183dbd0, []int{10}
+	return fileDescriptor_bcf64de72183dbd0, []int{12}
 }
 
 func (m *NCLinkDataItem) XXX_Unmarshal(b []byte) error {
@@ -780,7 +954,7 @@ func (m *NCLinkDataTypeUnit) Reset()         { *m = NCLinkDataTypeUnit{} }
 func (m *NCLinkDataTypeUnit) String() string { return proto.CompactTextString(m) }
 func (*NCLinkDataTypeUnit) ProtoMessage()    {}
 func (*NCLinkDataTypeUnit) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bcf64de72183dbd0, []int{11}
+	return fileDescriptor_bcf64de72183dbd0, []int{13}
 }
 
 func (m *NCLinkDataTypeUnit) XXX_Unmarshal(b []byte) error {
@@ -829,7 +1003,7 @@ func (m *NCLinkSampleInfo) Reset()         { *m = NCLinkSampleInfo{} }
 func (m *NCLinkSampleInfo) String() string { return proto.CompactTextString(m) }
 func (*NCLinkSampleInfo) ProtoMessage()    {}
 func (*NCLinkSampleInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bcf64de72183dbd0, []int{12}
+	return fileDescriptor_bcf64de72183dbd0, []int{14}
 }
 
 func (m *NCLinkSampleInfo) XXX_Unmarshal(b []byte) error {
@@ -880,12 +1054,15 @@ func (m *NCLinkSampleInfo) GetUploadPeriod() int64 {
 
 func init() {
 	proto.RegisterEnum("nclink.DataKind", DataKind_name, DataKind_value)
+	proto.RegisterEnum("nclink.TopicMessageKind", TopicMessageKind_name, TopicMessageKind_value)
 	proto.RegisterType((*NCLinkTopicSub)(nil), "nclink.NCLinkTopicSub")
 	proto.RegisterType((*NCLinkTopicMessage)(nil), "nclink.NCLinkTopicMessage")
 	proto.RegisterType((*NCLinkAuthReq)(nil), "nclink.NCLinkAuthReq")
 	proto.RegisterType((*NCLinkAuthResp)(nil), "nclink.NCLinkAuthResp")
 	proto.RegisterType((*NCLinkBaseResp)(nil), "nclink.NCLinkBaseResp")
 	proto.RegisterType((*NCLinkDataMessage)(nil), "nclink.NCLinkDataMessage")
+	proto.RegisterType((*NCLinkMetaDataReq)(nil), "nclink.NCLinkMetaDataReq")
+	proto.RegisterType((*NCLinkMetaDataResp)(nil), "nclink.NCLinkMetaDataResp")
 	proto.RegisterType((*NCLinkAdaptor)(nil), "nclink.NCLinkAdaptor")
 	proto.RegisterType((*NCLinkDevice)(nil), "nclink.NCLinkDevice")
 	proto.RegisterType((*NCLinkComponent)(nil), "nclink.NCLinkComponent")
@@ -899,70 +1076,77 @@ func init() {
 func init() { proto.RegisterFile("NC-Link.proto", fileDescriptor_bcf64de72183dbd0) }
 
 var fileDescriptor_bcf64de72183dbd0 = []byte{
-	// 1006 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x56, 0x4d, 0x6f, 0xdb, 0x46,
-	0x10, 0x2d, 0xf5, 0xad, 0x11, 0x25, 0x33, 0x8b, 0xd6, 0x55, 0x54, 0x14, 0x51, 0xd8, 0x04, 0x51,
-	0x0b, 0xd4, 0xa9, 0x65, 0x43, 0x70, 0xd3, 0x53, 0xec, 0x7c, 0x80, 0x40, 0xe3, 0x06, 0xb4, 0x73,
-	0x16, 0x56, 0xe2, 0x9a, 0x5d, 0x98, 0xda, 0x65, 0xc9, 0xa5, 0x1b, 0xdf, 0xfa, 0x57, 0x7a, 0xeb,
-	0xb1, 0xbf, 0xa2, 0x40, 0xdb, 0x3f, 0x15, 0xec, 0x17, 0x29, 0x59, 0x3a, 0xf8, 0x36, 0xfb, 0x66,
-	0xf6, 0x71, 0xdf, 0x9b, 0xe1, 0x92, 0xd0, 0x3f, 0x3f, 0xfb, 0xfe, 0x67, 0xca, 0xae, 0x0f, 0xd2,
-	0x8c, 0x0b, 0x8e, 0x5a, 0x6c, 0x99, 0x50, 0x76, 0x3d, 0x7a, 0x18, 0x73, 0x1e, 0x27, 0xe4, 0xb9,
-	0x42, 0x17, 0xc5, 0xd5, 0x73, 0xcc, 0x6e, 0x75, 0x89, 0xff, 0x02, 0x06, 0xe7, 0x67, 0x72, 0xcb,
-	0x25, 0x4f, 0xe9, 0xf2, 0xa2, 0x58, 0xa0, 0xcf, 0xa1, 0x29, 0x64, 0x3c, 0x74, 0xc6, 0xce, 0xa4,
-	0x1b, 0xea, 0x05, 0x42, 0xd0, 0x10, 0x38, 0xce, 0x87, 0xb5, 0x71, 0x7d, 0xd2, 0x0d, 0x55, 0xec,
-	0x9f, 0x02, 0x5a, 0xdb, 0xfb, 0x8e, 0xe4, 0x39, 0x8e, 0x89, 0xaa, 0xbc, 0x4d, 0x89, 0xda, 0xde,
-	0x0f, 0x55, 0x8c, 0x86, 0xd0, 0x4e, 0xf1, 0x6d, 0xc2, 0x71, 0x34, 0xac, 0x8d, 0x9d, 0x89, 0x1b,
-	0xda, 0xa5, 0xff, 0x46, 0x9e, 0x59, 0x72, 0xbc, 0x2c, 0xc4, 0xaf, 0x21, 0xf9, 0x0d, 0x3d, 0x84,
-	0x4e, 0xc2, 0x63, 0xba, 0x9c, 0xd3, 0xc8, 0x9c, 0xa0, 0xad, 0xd6, 0x41, 0x84, 0x46, 0xd0, 0x49,
-	0x71, 0x9e, 0xff, 0xce, 0x33, 0x4d, 0xd3, 0x0d, 0xcb, 0xb5, 0xff, 0xda, 0xea, 0xd0, 0x3c, 0x79,
-	0x8a, 0x8e, 0xa0, 0xbb, 0xc0, 0x39, 0x99, 0x67, 0x24, 0x4f, 0x15, 0x53, 0x6f, 0xba, 0x7f, 0xa0,
-	0x0d, 0x39, 0xd0, 0xa5, 0xa7, 0x38, 0x27, 0xb2, 0x34, 0xec, 0x2c, 0x4c, 0xe4, 0x07, 0x96, 0xc6,
-	0xe6, 0xd0, 0x23, 0xe8, 0xe5, 0x02, 0x8b, 0x22, 0x9f, 0x2f, 0x79, 0x64, 0x55, 0x81, 0x86, 0xce,
-	0x78, 0x44, 0xd0, 0x3e, 0xb4, 0x22, 0x22, 0x30, 0x4d, 0xcc, 0x99, 0xcc, 0xca, 0xff, 0xcf, 0x81,
-	0x07, 0x9a, 0xeb, 0x15, 0x16, 0xd8, 0xba, 0xf3, 0x25, 0xb4, 0x23, 0x2c, 0x70, 0xa5, 0xae, 0x25,
-	0x97, 0x41, 0x84, 0xbe, 0x82, 0x6e, 0x44, 0x6e, 0xe8, 0x92, 0xc8, 0x94, 0x51, 0xa7, 0x81, 0x20,
-	0x42, 0x8f, 0xc1, 0x5d, 0xf2, 0x55, 0xca, 0x19, 0x61, 0x42, 0xe6, 0xeb, 0x2a, 0xdf, 0x2b, 0xb1,
-	0x20, 0x42, 0x63, 0x70, 0x35, 0xb1, 0x20, 0x2b, 0x59, 0xd2, 0x50, 0x25, 0xa0, 0xd8, 0x05, 0x59,
-	0xe9, 0x8a, 0x82, 0xd1, 0x8f, 0x73, 0x41, 0x57, 0x64, 0xbe, 0xca, 0x87, 0xcd, 0xb1, 0x33, 0xa9,
-	0x87, 0x20, 0xb1, 0x4b, 0xba, 0x22, 0xef, 0xf2, 0xf5, 0x36, 0xb5, 0x36, 0xdb, 0xf4, 0xaf, 0x53,
-	0xf6, 0x29, 0xc2, 0xa9, 0xe0, 0x19, 0xfa, 0x1a, 0x00, 0xeb, 0xb0, 0xd2, 0xd2, 0x35, 0x48, 0x10,
-	0xc9, 0x29, 0x60, 0x78, 0x45, 0x8c, 0x12, 0x15, 0x4b, 0x15, 0x76, 0x8b, 0x9a, 0x10, 0xa3, 0xc2,
-	0x60, 0x97, 0x72, 0x50, 0xc6, 0xd0, 0x8b, 0x48, 0xbe, 0xcc, 0x68, 0x2a, 0x28, 0x67, 0x46, 0xc4,
-	0x3a, 0xb4, 0xe9, 0x53, 0x53, 0x4d, 0x63, 0xe5, 0xd3, 0x37, 0xd0, 0x37, 0xc9, 0x25, 0x67, 0x57,
-	0x34, 0x1e, 0xb6, 0xc6, 0xf5, 0x89, 0x1b, 0xba, 0x1a, 0x3c, 0x53, 0x98, 0xff, 0x57, 0x0d, 0x5c,
-	0xd3, 0x18, 0x05, 0x6f, 0x52, 0x3a, 0x77, 0xac, 0xdf, 0x25, 0xe4, 0x91, 0x3c, 0xa5, 0xda, 0xb0,
-	0xa6, 0x03, 0x34, 0x74, 0x4f, 0x19, 0x8f, 0xc1, 0x1c, 0x6a, 0x1e, 0x67, 0xbc, 0x48, 0x55, 0x33,
-	0x54, 0x89, 0xc4, 0xde, 0x4a, 0x68, 0xab, 0xe9, 0x2d, 0x25, 0x76, 0xa3, 0xe9, 0xdf, 0x82, 0x57,
-	0x95, 0x18, 0xc9, 0x6d, 0x25, 0x79, 0xaf, 0xc4, 0xb5, 0x6a, 0xf9, 0x3a, 0x94, 0xf3, 0x31, 0xec,
-	0x8c, 0xeb, 0xdb, 0xaf, 0xc3, 0x2b, 0x33, 0x2a, 0x61, 0xc7, 0x0e, 0x8d, 0xff, 0x8f, 0x03, 0x7b,
-	0x3a, 0x79, 0x66, 0xe9, 0xb6, 0x8e, 0xe5, 0x6c, 0xcf, 0xe2, 0x2e, 0xcf, 0x9e, 0xc2, 0xa0, 0xda,
-	0xb6, 0x66, 0x5b, 0xbf, 0x44, 0xef, 0xe9, 0x5c, 0x29, 0x84, 0x5d, 0x71, 0x35, 0x00, 0xbb, 0x85,
-	0xb0, 0x2b, 0x6e, 0x84, 0xb0, 0x2b, 0xee, 0xff, 0xe1, 0xd8, 0x17, 0xdb, 0x26, 0x37, 0x0d, 0xd9,
-	0x79, 0x3f, 0x6c, 0x1b, 0x82, 0x7e, 0x84, 0x5e, 0x8e, 0x57, 0x69, 0x42, 0xf4, 0xe3, 0x6b, 0x6a,
-	0xdb, 0x70, 0x73, 0xdb, 0x85, 0x2a, 0x50, 0x07, 0x80, 0xbc, 0x8c, 0xfd, 0x3f, 0x6b, 0x1b, 0x47,
-	0x90, 0x6c, 0x77, 0xdf, 0x59, 0x67, 0xeb, 0x9d, 0xdd, 0xe5, 0xe4, 0x13, 0x18, 0x54, 0xbb, 0xd6,
-	0x9c, 0x74, 0xed, 0xbe, 0x7b, 0x1a, 0xf9, 0xd2, 0x18, 0xa0, 0x28, 0xb4, 0x91, 0x4f, 0x76, 0x1b,
-	0x70, 0x20, 0x03, 0xc9, 0xfa, 0x9a, 0x89, 0xec, 0x56, 0xdb, 0x21, 0x97, 0xa3, 0x73, 0xe8, 0x6f,
-	0xa4, 0x90, 0x07, 0xf5, 0x6b, 0x72, 0x6b, 0x84, 0xc8, 0x10, 0x3d, 0x83, 0xe6, 0x0d, 0x4e, 0x0a,
-	0x2d, 0x61, 0x30, 0x7d, 0x60, 0x9f, 0xa0, 0x1e, 0x7d, 0x4d, 0x59, 0x14, 0xea, 0xfc, 0x8b, 0xda,
-	0x89, 0xe3, 0xff, 0x62, 0xbf, 0x28, 0x96, 0xf5, 0x03, 0xa3, 0x02, 0x3d, 0x85, 0x86, 0x2c, 0x54,
-	0xac, 0x3b, 0x19, 0x54, 0x5a, 0x7a, 0x55, 0x30, 0x2a, 0xac, 0x57, 0x32, 0xf6, 0xff, 0x76, 0xc0,
-	0xbb, 0xdb, 0x15, 0x69, 0xe0, 0x5a, 0x13, 0x2b, 0xe3, 0xdd, 0xaa, 0x5b, 0x41, 0x84, 0x26, 0xe0,
-	0xad, 0x57, 0x29, 0x97, 0x34, 0xf5, 0xa0, 0xaa, 0x53, 0x56, 0x3f, 0x83, 0x3d, 0x85, 0x50, 0x16,
-	0xcf, 0x53, 0x92, 0x51, 0xae, 0x2f, 0xe8, 0xba, 0x29, 0xa4, 0x2c, 0x7e, 0xaf, 0x50, 0x79, 0x3d,
-	0x15, 0xa9, 0xbc, 0x4f, 0x6d, 0x59, 0x43, 0x95, 0xb9, 0x1a, 0xd4, 0x45, 0xdf, 0xfd, 0xef, 0x98,
-	0xbe, 0x28, 0x51, 0x3d, 0x68, 0x07, 0xec, 0x06, 0x27, 0x34, 0xf2, 0x3e, 0x43, 0x1d, 0x68, 0x9c,
-	0x72, 0x9e, 0x78, 0x8e, 0x8c, 0x02, 0x26, 0x4e, 0xbc, 0x1a, 0xea, 0x42, 0x33, 0x60, 0xe2, 0x70,
-	0xe6, 0xd5, 0x4d, 0x78, 0x34, 0xf5, 0x1a, 0x26, 0x9c, 0x1d, 0x7b, 0x4d, 0x59, 0xfa, 0x81, 0x32,
-	0xe1, 0xb5, 0x24, 0x28, 0xa3, 0x13, 0xaf, 0x8d, 0x00, 0x5a, 0x32, 0x3c, 0x9c, 0x79, 0x1d, 0x1b,
-	0x1f, 0x4d, 0xbd, 0xae, 0x8d, 0x67, 0xc7, 0x1e, 0xc8, 0x47, 0xbf, 0x49, 0x38, 0x96, 0x89, 0x5e,
-	0xb9, 0x98, 0x1d, 0x7b, 0x2e, 0xea, 0x43, 0x57, 0xde, 0x07, 0x09, 0xf9, 0x38, 0x3b, 0xf6, 0xfa,
-	0x68, 0x00, 0x60, 0x96, 0x87, 0xd3, 0x13, 0x6f, 0x20, 0x49, 0x2e, 0x44, 0x46, 0x59, 0xec, 0xed,
-	0x4d, 0xdf, 0xdb, 0x8f, 0xa0, 0xfc, 0x2e, 0x5f, 0x90, 0x4c, 0x5d, 0xb8, 0x3f, 0x01, 0x54, 0x20,
-	0xfa, 0x62, 0x73, 0xe8, 0xcc, 0x8f, 0xc0, 0x68, 0x7f, 0x17, 0x9c, 0xa7, 0x53, 0x0c, 0xfb, 0xa6,
-	0xa3, 0xc5, 0x42, 0x0e, 0xf3, 0x82, 0x58, 0xda, 0xb7, 0xf6, 0xb2, 0x2a, 0x33, 0xe8, 0x0e, 0x89,
-	0xfd, 0xc9, 0x19, 0x8d, 0x76, 0xe0, 0xe6, 0x13, 0xfd, 0x83, 0xb3, 0x68, 0xa9, 0x7f, 0xa3, 0xa3,
-	0x4f, 0x01, 0x00, 0x00, 0xff, 0xff, 0x3a, 0x8b, 0x4b, 0x2d, 0x4f, 0x09, 0x00, 0x00,
+	// 1119 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xd4, 0x56, 0xcd, 0x8e, 0x1b, 0x45,
+	0x10, 0xce, 0x78, 0xfc, 0x5b, 0x1e, 0x7b, 0x27, 0x2d, 0x58, 0x1c, 0x23, 0x14, 0x67, 0xd8, 0x28,
+	0x26, 0x12, 0x2b, 0xd6, 0xbb, 0xb2, 0x96, 0x20, 0x0e, 0x89, 0x93, 0xac, 0x2c, 0xd8, 0x05, 0x8d,
+	0x37, 0x67, 0x6b, 0xec, 0x69, 0x9b, 0xd6, 0xda, 0xdd, 0x83, 0xa7, 0xbd, 0xc4, 0x37, 0x5e, 0x05,
+	0x4e, 0x1c, 0x39, 0xf3, 0x00, 0x48, 0xc0, 0xcb, 0xf0, 0x08, 0xa8, 0xff, 0xc6, 0x33, 0x1e, 0xa3,
+	0xec, 0x35, 0xb7, 0xaa, 0xaf, 0xaa, 0xab, 0xeb, 0xab, 0xae, 0xae, 0x6e, 0x68, 0x5c, 0x0d, 0x3e,
+	0xff, 0x96, 0xd0, 0x9b, 0xe3, 0x68, 0xc5, 0x38, 0x43, 0x65, 0x3a, 0x5d, 0x10, 0x7a, 0xe3, 0x3d,
+	0x83, 0xe6, 0xd5, 0x40, 0xe0, 0xd7, 0x2c, 0x22, 0xd3, 0xd1, 0x7a, 0x82, 0x3e, 0x80, 0x12, 0x17,
+	0x72, 0xcb, 0xea, 0x58, 0xdd, 0x9a, 0xaf, 0x14, 0x84, 0xa0, 0xc8, 0x83, 0x79, 0xdc, 0x2a, 0x74,
+	0xec, 0x6e, 0xcd, 0x97, 0xb2, 0xb7, 0x04, 0x94, 0x5a, 0x7b, 0x89, 0xe3, 0x38, 0x98, 0x63, 0xf4,
+	0x35, 0x38, 0x4b, 0x25, 0x8e, 0x6f, 0x08, 0x0d, 0x65, 0x98, 0x66, 0xaf, 0x7d, 0xac, 0x36, 0x3c,
+	0x96, 0xe1, 0xc6, 0x69, 0x0f, 0xbf, 0xae, 0xb5, 0x6f, 0x08, 0x0d, 0x51, 0x0b, 0x2a, 0x51, 0xb0,
+	0x59, 0xb0, 0x20, 0x6c, 0x15, 0x3a, 0x56, 0xd7, 0xf1, 0x8d, 0xea, 0xbd, 0x16, 0x1c, 0xc4, 0x76,
+	0xcf, 0xd7, 0xfc, 0x07, 0x1f, 0xff, 0x88, 0x1e, 0x40, 0x75, 0xc1, 0xe6, 0x64, 0x3a, 0x26, 0xa1,
+	0x4e, 0xb6, 0x22, 0xf5, 0x61, 0x88, 0xda, 0x50, 0x8d, 0x82, 0x38, 0xfe, 0x89, 0xad, 0x54, 0x98,
+	0x9a, 0x9f, 0xe8, 0xde, 0x2b, 0x43, 0x59, 0xc5, 0x89, 0x23, 0x74, 0x0a, 0xb5, 0x49, 0x10, 0xe3,
+	0xf1, 0x0a, 0xc7, 0x91, 0x8c, 0x54, 0xef, 0x1d, 0x9a, 0x7c, 0x95, 0xeb, 0x8b, 0x20, 0xc6, 0xc2,
+	0xd5, 0xaf, 0x4e, 0xb4, 0xe4, 0x0d, 0x4d, 0x18, 0x63, 0x43, 0x0f, 0xa1, 0x1e, 0xf3, 0x80, 0xaf,
+	0xe3, 0xf1, 0x94, 0x85, 0x58, 0x06, 0x6a, 0xf8, 0xa0, 0xa0, 0x01, 0x0b, 0x31, 0x3a, 0x84, 0x72,
+	0x88, 0x79, 0x40, 0x16, 0x3a, 0x27, 0xad, 0x79, 0x7f, 0x5b, 0x70, 0x5f, 0xc5, 0x7a, 0x19, 0xf0,
+	0xc0, 0x14, 0xf2, 0x23, 0xa8, 0x84, 0x01, 0x0f, 0xb6, 0xec, 0xca, 0x42, 0x1d, 0x86, 0xe8, 0x63,
+	0xa8, 0x85, 0xf8, 0x96, 0x4c, 0xb1, 0x30, 0x69, 0x76, 0x0a, 0x18, 0x86, 0xe8, 0x11, 0x38, 0x53,
+	0xb6, 0x8c, 0x18, 0xc5, 0x94, 0x0b, 0xbb, 0x2d, 0xed, 0xf5, 0x04, 0x1b, 0x86, 0xa8, 0x03, 0x8e,
+	0x0a, 0xcc, 0xf1, 0x52, 0xb8, 0x14, 0xa5, 0x0b, 0xc8, 0xe8, 0x1c, 0x2f, 0x95, 0xc7, 0x9a, 0x92,
+	0xb7, 0x63, 0x4e, 0x96, 0x78, 0xbc, 0x8c, 0x5b, 0xa5, 0x8e, 0xd5, 0xb5, 0x7d, 0x10, 0xd8, 0x35,
+	0x59, 0xe2, 0xcb, 0x38, 0x7d, 0x4c, 0xe5, 0xec, 0x31, 0xfd, 0x91, 0x90, 0xb9, 0xc4, 0x3c, 0x10,
+	0x84, 0xc4, 0x59, 0x7d, 0x02, 0x10, 0x84, 0x41, 0xc4, 0xd9, 0x4a, 0xf1, 0x11, 0x5d, 0x54, 0xd3,
+	0x48, 0x9e, 0x92, 0xfd, 0x0e, 0x4a, 0xf6, 0xbb, 0x29, 0xd9, 0x3b, 0x94, 0x8e, 0xa0, 0x19, 0x07,
+	0xcb, 0x68, 0x81, 0xc7, 0x84, 0xce, 0x98, 0xf0, 0x29, 0x49, 0x1f, 0x47, 0xa1, 0x43, 0x3a, 0x63,
+	0xc3, 0xd0, 0xfb, 0xd7, 0x32, 0x3d, 0xbd, 0x4d, 0x3e, 0x8e, 0xde, 0x93, 0xec, 0xb3, 0x7d, 0x5c,
+	0xbe, 0x63, 0x1f, 0xff, 0x65, 0x25, 0xf7, 0x4a, 0x11, 0xca, 0xb1, 0xb5, 0xb2, 0x6c, 0x11, 0x14,
+	0x69, 0xb0, 0xc4, 0xba, 0xf3, 0xa4, 0x2c, 0x48, 0x9a, 0x25, 0x7c, 0x13, 0x61, 0xd3, 0x75, 0x1a,
+	0xbb, 0xde, 0x44, 0x18, 0x75, 0xa0, 0x1e, 0xe2, 0x78, 0xba, 0x22, 0x11, 0x27, 0x8c, 0xea, 0xa6,
+	0x4b, 0x43, 0xd9, 0x32, 0x96, 0x76, 0xca, 0xf8, 0x29, 0x34, 0xb4, 0x71, 0xca, 0xe8, 0x8c, 0xcc,
+	0x5b, 0xe5, 0x8e, 0xdd, 0x75, 0x7c, 0x47, 0x81, 0x03, 0x89, 0x79, 0xbf, 0x15, 0xc0, 0xd1, 0x17,
+	0x49, 0xc2, 0xd9, 0x90, 0xd6, 0xce, 0x55, 0xd9, 0x47, 0xe4, 0xa1, 0xc8, 0x52, 0x2e, 0x48, 0xf1,
+	0x00, 0x05, 0xdd, 0x91, 0xc6, 0x23, 0xd0, 0x49, 0x8d, 0xe7, 0x2b, 0xb6, 0x8e, 0xe4, 0xe5, 0x91,
+	0x2e, 0x02, 0xbb, 0x10, 0x50, 0xae, 0x27, 0xca, 0xf9, 0x9e, 0xf8, 0x0c, 0xdc, 0xad, 0x8b, 0xa6,
+	0x5c, 0x91, 0x94, 0x0f, 0x12, 0x5c, 0xb1, 0x16, 0xc7, 0x9e, 0xb4, 0x4f, 0xab, 0xda, 0xb1, 0xf3,
+	0xc7, 0xfe, 0x52, 0x77, 0x92, 0x5f, 0x35, 0x3d, 0xe5, 0xfd, 0x69, 0xc1, 0x81, 0x32, 0x0e, 0x4c,
+	0xb8, 0x5c, 0x5a, 0x56, 0x7e, 0x76, 0xec, 0xab, 0xd9, 0x63, 0x68, 0x6e, 0x97, 0xa5, 0xca, 0xd6,
+	0x48, 0xd0, 0x3b, 0x56, 0x2e, 0x21, 0x42, 0x67, 0x4c, 0x36, 0xc0, 0x7e, 0x22, 0x74, 0xc6, 0x34,
+	0x11, 0x3a, 0x63, 0xde, 0xcf, 0x96, 0x19, 0xc4, 0xc6, 0x98, 0x2d, 0xc8, 0xde, 0x79, 0x9e, 0x2f,
+	0x08, 0xfa, 0x12, 0xea, 0xa9, 0x2b, 0x26, 0x09, 0xd6, 0x7b, 0xad, 0xec, 0xb2, 0x51, 0x72, 0xdb,
+	0x7c, 0xd8, 0xde, 0x3c, 0xef, 0x97, 0x42, 0x26, 0x05, 0x11, 0x6d, 0xf7, 0x4a, 0x5b, 0xb9, 0x19,
+	0xbb, 0xaf, 0x92, 0x47, 0xd0, 0xdc, 0xae, 0x4a, 0x55, 0xd2, 0x31, 0xeb, 0xee, 0x58, 0xc8, 0xe7,
+	0xba, 0x00, 0x32, 0x84, 0x2a, 0xe4, 0xd1, 0xfe, 0x02, 0x1c, 0x0b, 0x41, 0x44, 0x7d, 0x45, 0xf9,
+	0x6a, 0xa3, 0xca, 0x21, 0xd4, 0xf6, 0x15, 0x34, 0x32, 0x26, 0xe4, 0x82, 0x7d, 0x83, 0x37, 0x9a,
+	0x88, 0x10, 0xd1, 0x13, 0x28, 0xdd, 0x06, 0x8b, 0xb5, 0xa2, 0xd0, 0xec, 0xdd, 0x37, 0x3b, 0xc8,
+	0xad, 0xe5, 0xcb, 0xae, 0xec, 0xcf, 0x0a, 0xe7, 0x96, 0xf7, 0x9d, 0x19, 0xac, 0x26, 0xea, 0x1b,
+	0x4a, 0x38, 0x7a, 0x0c, 0xc5, 0xd4, 0x27, 0x61, 0x4f, 0x04, 0x69, 0x16, 0xb5, 0x5a, 0x53, 0xc2,
+	0x4d, 0xad, 0x84, 0xec, 0xfd, 0x6e, 0x81, 0xbb, 0x7b, 0x2a, 0x7b, 0xe6, 0xa4, 0xca, 0x37, 0x3b,
+	0x27, 0xbb, 0xe0, 0xa6, 0xbd, 0x64, 0x95, 0x54, 0xe8, 0xe6, 0xd6, 0x4f, 0x96, 0xfa, 0x09, 0x1c,
+	0x48, 0x84, 0xd0, 0xf9, 0x38, 0xc2, 0x2b, 0xc2, 0xd4, 0x83, 0x6a, 0x6b, 0x47, 0x42, 0xe7, 0xdf,
+	0x4b, 0x54, 0x8c, 0xa7, 0x75, 0x24, 0xde, 0x3f, 0xe3, 0x56, 0x94, 0x6e, 0x8e, 0x02, 0x95, 0xd3,
+	0xd3, 0x7f, 0x2c, 0x7d, 0x2e, 0x92, 0x54, 0x1d, 0x2a, 0x43, 0x7a, 0x1b, 0x2c, 0x48, 0xe8, 0xde,
+	0x43, 0x55, 0x28, 0xbe, 0x60, 0x6c, 0xe1, 0x5a, 0x42, 0x1a, 0x52, 0x7e, 0xee, 0x16, 0x50, 0x0d,
+	0x4a, 0x43, 0xca, 0x4f, 0xfa, 0xae, 0xad, 0xc5, 0xd3, 0x9e, 0x5b, 0xd4, 0x62, 0xff, 0xcc, 0x2d,
+	0x09, 0xd7, 0x37, 0x84, 0x72, 0xb7, 0x2c, 0x40, 0x21, 0x9d, 0xbb, 0x15, 0x04, 0x50, 0x16, 0xe2,
+	0x49, 0xdf, 0xad, 0x1a, 0xf9, 0xb4, 0xe7, 0xd6, 0x8c, 0xdc, 0x3f, 0x73, 0x41, 0x6c, 0xfd, 0x7a,
+	0xc1, 0x02, 0x61, 0xa8, 0x27, 0x4a, 0xff, 0xcc, 0x75, 0x50, 0x03, 0x6a, 0x62, 0x1e, 0x2c, 0xf0,
+	0xdb, 0xfe, 0x99, 0xdb, 0x40, 0x4d, 0x00, 0xad, 0x9e, 0xf4, 0xce, 0xdd, 0xa6, 0x08, 0x32, 0xe2,
+	0x2b, 0x42, 0xe7, 0xee, 0xc1, 0xd3, 0x63, 0x40, 0xf9, 0xcf, 0x9c, 0x88, 0x36, 0xc2, 0x5c, 0xbc,
+	0x9e, 0xee, 0x3d, 0xa1, 0x5c, 0x68, 0xc5, 0xea, 0xfd, 0x5a, 0x30, 0x0f, 0xcd, 0x08, 0xaf, 0xe4,
+	0x74, 0xfe, 0x0a, 0x60, 0xfb, 0x13, 0x43, 0x1f, 0x66, 0x3b, 0x54, 0xff, 0xf2, 0xda, 0x87, 0xfb,
+	0xe0, 0x38, 0x42, 0x17, 0x66, 0x7e, 0x8d, 0xd6, 0x13, 0xd1, 0xf9, 0x13, 0x8c, 0x76, 0x5c, 0xcd,
+	0x97, 0xb6, 0xdd, 0xde, 0x83, 0xeb, 0x5f, 0xd6, 0x17, 0x16, 0x1a, 0x98, 0xcb, 0x3b, 0xc2, 0x34,
+	0x14, 0xdd, 0x89, 0x1e, 0xe4, 0xef, 0x8a, 0x76, 0x6f, 0xff, 0xcf, 0x7b, 0x8a, 0x92, 0xcf, 0xa9,
+	0xe6, 0xbb, 0x1b, 0x23, 0xf5, 0x17, 0xda, 0x4d, 0x27, 0xfd, 0xd3, 0x98, 0x94, 0xe5, 0xf7, 0xfc,
+	0xf4, 0xbf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x94, 0xc7, 0x62, 0x03, 0xaf, 0x0b, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -973,99 +1157,39 @@ var _ grpc.ClientConnInterface
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// NCLinkAuthServiceClient is the client API for NCLinkAuthService service.
+// NCLinkServiceClient is the client API for NCLinkService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type NCLinkAuthServiceClient interface {
+type NCLinkServiceClient interface {
 	NCLinkAuth(ctx context.Context, in *NCLinkAuthReq, opts ...grpc.CallOption) (*NCLinkAuthResp, error)
+	NCLinkSubscribe(ctx context.Context, in *NCLinkTopicSub, opts ...grpc.CallOption) (NCLinkService_NCLinkSubscribeClient, error)
+	NCLinkSendData(ctx context.Context, in *NCLinkDataMessage, opts ...grpc.CallOption) (*NCLinkBaseResp, error)
+	NCLinkGetMeta(ctx context.Context, in *NCLinkMetaDataReq, opts ...grpc.CallOption) (*NCLinkMetaDataResp, error)
 }
 
-type nCLinkAuthServiceClient struct {
+type nCLinkServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewNCLinkAuthServiceClient(cc grpc.ClientConnInterface) NCLinkAuthServiceClient {
-	return &nCLinkAuthServiceClient{cc}
+func NewNCLinkServiceClient(cc grpc.ClientConnInterface) NCLinkServiceClient {
+	return &nCLinkServiceClient{cc}
 }
 
-func (c *nCLinkAuthServiceClient) NCLinkAuth(ctx context.Context, in *NCLinkAuthReq, opts ...grpc.CallOption) (*NCLinkAuthResp, error) {
+func (c *nCLinkServiceClient) NCLinkAuth(ctx context.Context, in *NCLinkAuthReq, opts ...grpc.CallOption) (*NCLinkAuthResp, error) {
 	out := new(NCLinkAuthResp)
-	err := c.cc.Invoke(ctx, "/nclink.NCLinkAuthService/NCLinkAuth", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/nclink.NCLinkService/NCLinkAuth", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// NCLinkAuthServiceServer is the server API for NCLinkAuthService service.
-type NCLinkAuthServiceServer interface {
-	NCLinkAuth(context.Context, *NCLinkAuthReq) (*NCLinkAuthResp, error)
-}
-
-// UnimplementedNCLinkAuthServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedNCLinkAuthServiceServer struct {
-}
-
-func (*UnimplementedNCLinkAuthServiceServer) NCLinkAuth(ctx context.Context, req *NCLinkAuthReq) (*NCLinkAuthResp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NCLinkAuth not implemented")
-}
-
-func RegisterNCLinkAuthServiceServer(s *grpc.Server, srv NCLinkAuthServiceServer) {
-	s.RegisterService(&_NCLinkAuthService_serviceDesc, srv)
-}
-
-func _NCLinkAuthService_NCLinkAuth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NCLinkAuthReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NCLinkAuthServiceServer).NCLinkAuth(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/nclink.NCLinkAuthService/NCLinkAuth",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NCLinkAuthServiceServer).NCLinkAuth(ctx, req.(*NCLinkAuthReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _NCLinkAuthService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "nclink.NCLinkAuthService",
-	HandlerType: (*NCLinkAuthServiceServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "NCLinkAuth",
-			Handler:    _NCLinkAuthService_NCLinkAuth_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "NC-Link.proto",
-}
-
-// NCLinkSubscribeServiceClient is the client API for NCLinkSubscribeService service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type NCLinkSubscribeServiceClient interface {
-	NCLinkSubscribe(ctx context.Context, in *NCLinkTopicSub, opts ...grpc.CallOption) (NCLinkSubscribeService_NCLinkSubscribeClient, error)
-}
-
-type nCLinkSubscribeServiceClient struct {
-	cc grpc.ClientConnInterface
-}
-
-func NewNCLinkSubscribeServiceClient(cc grpc.ClientConnInterface) NCLinkSubscribeServiceClient {
-	return &nCLinkSubscribeServiceClient{cc}
-}
-
-func (c *nCLinkSubscribeServiceClient) NCLinkSubscribe(ctx context.Context, in *NCLinkTopicSub, opts ...grpc.CallOption) (NCLinkSubscribeService_NCLinkSubscribeClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_NCLinkSubscribeService_serviceDesc.Streams[0], "/nclink.NCLinkSubscribeService/NCLinkSubscribe", opts...)
+func (c *nCLinkServiceClient) NCLinkSubscribe(ctx context.Context, in *NCLinkTopicSub, opts ...grpc.CallOption) (NCLinkService_NCLinkSubscribeClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_NCLinkService_serviceDesc.Streams[0], "/nclink.NCLinkService/NCLinkSubscribe", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &nCLinkSubscribeServiceNCLinkSubscribeClient{stream}
+	x := &nCLinkServiceNCLinkSubscribeClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -1075,16 +1199,16 @@ func (c *nCLinkSubscribeServiceClient) NCLinkSubscribe(ctx context.Context, in *
 	return x, nil
 }
 
-type NCLinkSubscribeService_NCLinkSubscribeClient interface {
+type NCLinkService_NCLinkSubscribeClient interface {
 	Recv() (*NCLinkTopicMessage, error)
 	grpc.ClientStream
 }
 
-type nCLinkSubscribeServiceNCLinkSubscribeClient struct {
+type nCLinkServiceNCLinkSubscribeClient struct {
 	grpc.ClientStream
 }
 
-func (x *nCLinkSubscribeServiceNCLinkSubscribeClient) Recv() (*NCLinkTopicMessage, error) {
+func (x *nCLinkServiceNCLinkSubscribeClient) Recv() (*NCLinkTopicMessage, error) {
 	m := new(NCLinkTopicMessage)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -1092,86 +1216,186 @@ func (x *nCLinkSubscribeServiceNCLinkSubscribeClient) Recv() (*NCLinkTopicMessag
 	return m, nil
 }
 
-// NCLinkSubscribeServiceServer is the server API for NCLinkSubscribeService service.
-type NCLinkSubscribeServiceServer interface {
-	NCLinkSubscribe(*NCLinkTopicSub, NCLinkSubscribeService_NCLinkSubscribeServer) error
+func (c *nCLinkServiceClient) NCLinkSendData(ctx context.Context, in *NCLinkDataMessage, opts ...grpc.CallOption) (*NCLinkBaseResp, error) {
+	out := new(NCLinkBaseResp)
+	err := c.cc.Invoke(ctx, "/nclink.NCLinkService/NCLinkSendData", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-// UnimplementedNCLinkSubscribeServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedNCLinkSubscribeServiceServer struct {
+func (c *nCLinkServiceClient) NCLinkGetMeta(ctx context.Context, in *NCLinkMetaDataReq, opts ...grpc.CallOption) (*NCLinkMetaDataResp, error) {
+	out := new(NCLinkMetaDataResp)
+	err := c.cc.Invoke(ctx, "/nclink.NCLinkService/NCLinkGetMeta", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-func (*UnimplementedNCLinkSubscribeServiceServer) NCLinkSubscribe(req *NCLinkTopicSub, srv NCLinkSubscribeService_NCLinkSubscribeServer) error {
+// NCLinkServiceServer is the server API for NCLinkService service.
+type NCLinkServiceServer interface {
+	NCLinkAuth(context.Context, *NCLinkAuthReq) (*NCLinkAuthResp, error)
+	NCLinkSubscribe(*NCLinkTopicSub, NCLinkService_NCLinkSubscribeServer) error
+	NCLinkSendData(context.Context, *NCLinkDataMessage) (*NCLinkBaseResp, error)
+	NCLinkGetMeta(context.Context, *NCLinkMetaDataReq) (*NCLinkMetaDataResp, error)
+}
+
+// UnimplementedNCLinkServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedNCLinkServiceServer struct {
+}
+
+func (*UnimplementedNCLinkServiceServer) NCLinkAuth(ctx context.Context, req *NCLinkAuthReq) (*NCLinkAuthResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NCLinkAuth not implemented")
+}
+func (*UnimplementedNCLinkServiceServer) NCLinkSubscribe(req *NCLinkTopicSub, srv NCLinkService_NCLinkSubscribeServer) error {
 	return status.Errorf(codes.Unimplemented, "method NCLinkSubscribe not implemented")
 }
-
-func RegisterNCLinkSubscribeServiceServer(s *grpc.Server, srv NCLinkSubscribeServiceServer) {
-	s.RegisterService(&_NCLinkSubscribeService_serviceDesc, srv)
+func (*UnimplementedNCLinkServiceServer) NCLinkSendData(ctx context.Context, req *NCLinkDataMessage) (*NCLinkBaseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NCLinkSendData not implemented")
+}
+func (*UnimplementedNCLinkServiceServer) NCLinkGetMeta(ctx context.Context, req *NCLinkMetaDataReq) (*NCLinkMetaDataResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NCLinkGetMeta not implemented")
 }
 
-func _NCLinkSubscribeService_NCLinkSubscribe_Handler(srv interface{}, stream grpc.ServerStream) error {
+func RegisterNCLinkServiceServer(s *grpc.Server, srv NCLinkServiceServer) {
+	s.RegisterService(&_NCLinkService_serviceDesc, srv)
+}
+
+func _NCLinkService_NCLinkAuth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NCLinkAuthReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NCLinkServiceServer).NCLinkAuth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nclink.NCLinkService/NCLinkAuth",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NCLinkServiceServer).NCLinkAuth(ctx, req.(*NCLinkAuthReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NCLinkService_NCLinkSubscribe_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(NCLinkTopicSub)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(NCLinkSubscribeServiceServer).NCLinkSubscribe(m, &nCLinkSubscribeServiceNCLinkSubscribeServer{stream})
+	return srv.(NCLinkServiceServer).NCLinkSubscribe(m, &nCLinkServiceNCLinkSubscribeServer{stream})
 }
 
-type NCLinkSubscribeService_NCLinkSubscribeServer interface {
+type NCLinkService_NCLinkSubscribeServer interface {
 	Send(*NCLinkTopicMessage) error
 	grpc.ServerStream
 }
 
-type nCLinkSubscribeServiceNCLinkSubscribeServer struct {
+type nCLinkServiceNCLinkSubscribeServer struct {
 	grpc.ServerStream
 }
 
-func (x *nCLinkSubscribeServiceNCLinkSubscribeServer) Send(m *NCLinkTopicMessage) error {
+func (x *nCLinkServiceNCLinkSubscribeServer) Send(m *NCLinkTopicMessage) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-var _NCLinkSubscribeService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "nclink.NCLinkSubscribeService",
-	HandlerType: (*NCLinkSubscribeServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+func _NCLinkService_NCLinkSendData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NCLinkDataMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NCLinkServiceServer).NCLinkSendData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nclink.NCLinkService/NCLinkSendData",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NCLinkServiceServer).NCLinkSendData(ctx, req.(*NCLinkDataMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NCLinkService_NCLinkGetMeta_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NCLinkMetaDataReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NCLinkServiceServer).NCLinkGetMeta(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nclink.NCLinkService/NCLinkGetMeta",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NCLinkServiceServer).NCLinkGetMeta(ctx, req.(*NCLinkMetaDataReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _NCLinkService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "nclink.NCLinkService",
+	HandlerType: (*NCLinkServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "NCLinkAuth",
+			Handler:    _NCLinkService_NCLinkAuth_Handler,
+		},
+		{
+			MethodName: "NCLinkSendData",
+			Handler:    _NCLinkService_NCLinkSendData_Handler,
+		},
+		{
+			MethodName: "NCLinkGetMeta",
+			Handler:    _NCLinkService_NCLinkGetMeta_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "NCLinkSubscribe",
-			Handler:       _NCLinkSubscribeService_NCLinkSubscribe_Handler,
+			Handler:       _NCLinkService_NCLinkSubscribe_Handler,
 			ServerStreams: true,
 		},
 	},
 	Metadata: "NC-Link.proto",
 }
 
-// NCLinkAuthServiceClientImpl is the client API for NCLinkAuthService service.
+// NCLinkServiceClientImpl is the client API for NCLinkService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type NCLinkAuthServiceClientImpl struct {
-	NCLinkAuth func(ctx context.Context, in *NCLinkAuthReq, out *NCLinkAuthResp) error
+type NCLinkServiceClientImpl struct {
+	NCLinkAuth      func(ctx context.Context, in *NCLinkAuthReq, out *NCLinkAuthResp) error
+	NCLinkSubscribe func(ctx context.Context, in *NCLinkTopicSub) (NCLinkService_NCLinkSubscribeClient, error)
+	NCLinkSendData  func(ctx context.Context, in *NCLinkDataMessage, out *NCLinkBaseResp) error
+	NCLinkGetMeta   func(ctx context.Context, in *NCLinkMetaDataReq, out *NCLinkMetaDataResp) error
 }
 
-func (c *NCLinkAuthServiceClientImpl) Reference() string {
-	return "nCLinkAuthServiceImpl"
+func (c *NCLinkServiceClientImpl) Reference() string {
+	return "nCLinkServiceImpl"
 }
 
-func (c *NCLinkAuthServiceClientImpl) GetDubboStub(cc *grpc.ClientConn) NCLinkAuthServiceClient {
-	return NewNCLinkAuthServiceClient(cc)
+func (c *NCLinkServiceClientImpl) GetDubboStub(cc *grpc.ClientConn) NCLinkServiceClient {
+	return NewNCLinkServiceClient(cc)
 }
 
-type NCLinkAuthServiceProviderBase struct {
+type NCLinkServiceProviderBase struct {
 	proxyImpl protocol.Invoker
 }
 
-func (s *NCLinkAuthServiceProviderBase) SetProxyImpl(impl protocol.Invoker) {
+func (s *NCLinkServiceProviderBase) SetProxyImpl(impl protocol.Invoker) {
 	s.proxyImpl = impl
 }
 
-func (s *NCLinkAuthServiceProviderBase) GetProxyImpl() protocol.Invoker {
+func (s *NCLinkServiceProviderBase) GetProxyImpl() protocol.Invoker {
 	return s.proxyImpl
 }
 
-func _DUBBO_NCLinkAuthService_NCLinkAuth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _DUBBO_NCLinkService_NCLinkAuth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NCLinkAuthReq)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -1186,7 +1410,7 @@ func _DUBBO_NCLinkAuthService_NCLinkAuth_Handler(srv interface{}, ctx context.Co
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nclink.NCLinkAuthService/NCLinkAuth",
+		FullMethod: "/nclink.NCLinkService/NCLinkAuth",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		result := base.GetProxyImpl().Invoke(context.Background(), invo)
@@ -1195,49 +1419,7 @@ func _DUBBO_NCLinkAuthService_NCLinkAuth_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
-func (s *NCLinkAuthServiceProviderBase) ServiceDesc() *grpc.ServiceDesc {
-	return &grpc.ServiceDesc{
-		ServiceName: "nclink.NCLinkAuthService",
-		HandlerType: (*NCLinkAuthServiceServer)(nil),
-		Methods: []grpc.MethodDesc{
-			{
-				MethodName: "NCLinkAuth",
-				Handler:    _DUBBO_NCLinkAuthService_NCLinkAuth_Handler,
-			},
-		},
-		Streams:  []grpc.StreamDesc{},
-		Metadata: "NC-Link.proto",
-	}
-}
-
-// NCLinkSubscribeServiceClientImpl is the client API for NCLinkSubscribeService service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type NCLinkSubscribeServiceClientImpl struct {
-	NCLinkSubscribe func(ctx context.Context, in *NCLinkTopicSub) (NCLinkSubscribeService_NCLinkSubscribeClient, error)
-}
-
-func (c *NCLinkSubscribeServiceClientImpl) Reference() string {
-	return "nCLinkSubscribeServiceImpl"
-}
-
-func (c *NCLinkSubscribeServiceClientImpl) GetDubboStub(cc *grpc.ClientConn) NCLinkSubscribeServiceClient {
-	return NewNCLinkSubscribeServiceClient(cc)
-}
-
-type NCLinkSubscribeServiceProviderBase struct {
-	proxyImpl protocol.Invoker
-}
-
-func (s *NCLinkSubscribeServiceProviderBase) SetProxyImpl(impl protocol.Invoker) {
-	s.proxyImpl = impl
-}
-
-func (s *NCLinkSubscribeServiceProviderBase) GetProxyImpl() protocol.Invoker {
-	return s.proxyImpl
-}
-
-func _DUBBO_NCLinkSubscribeService_NCLinkSubscribe_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _DUBBO_NCLinkService_NCLinkSubscribe_Handler(srv interface{}, stream grpc.ServerStream) error {
 	_, ok := srv.(dgrpc.DubboGrpcService)
 	invo := invocation.NewRPCInvocation("NCLinkSubscribe", nil, nil)
 	if !ok {
@@ -1247,18 +1429,79 @@ func _DUBBO_NCLinkSubscribeService_NCLinkSubscribe_Handler(srv interface{}, stre
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(NCLinkSubscribeServiceServer).NCLinkSubscribe(m, &nCLinkSubscribeServiceNCLinkSubscribeServer{stream})
+	return srv.(NCLinkServiceServer).NCLinkSubscribe(m, &nCLinkServiceNCLinkSubscribeServer{stream})
 }
 
-func (s *NCLinkSubscribeServiceProviderBase) ServiceDesc() *grpc.ServiceDesc {
+func _DUBBO_NCLinkService_NCLinkSendData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NCLinkDataMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	base := srv.(dgrpc.DubboGrpcService)
+	args := []interface{}{}
+	args = append(args, in)
+	invo := invocation.NewRPCInvocation("NCLinkSendData", args, nil)
+	if interceptor == nil {
+		result := base.GetProxyImpl().Invoke(context.Background(), invo)
+		return result.Result(), result.Error()
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nclink.NCLinkService/NCLinkSendData",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		result := base.GetProxyImpl().Invoke(context.Background(), invo)
+		return result.Result(), result.Error()
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DUBBO_NCLinkService_NCLinkGetMeta_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NCLinkMetaDataReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	base := srv.(dgrpc.DubboGrpcService)
+	args := []interface{}{}
+	args = append(args, in)
+	invo := invocation.NewRPCInvocation("NCLinkGetMeta", args, nil)
+	if interceptor == nil {
+		result := base.GetProxyImpl().Invoke(context.Background(), invo)
+		return result.Result(), result.Error()
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nclink.NCLinkService/NCLinkGetMeta",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		result := base.GetProxyImpl().Invoke(context.Background(), invo)
+		return result.Result(), result.Error()
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func (s *NCLinkServiceProviderBase) ServiceDesc() *grpc.ServiceDesc {
 	return &grpc.ServiceDesc{
-		ServiceName: "nclink.NCLinkSubscribeService",
-		HandlerType: (*NCLinkSubscribeServiceServer)(nil),
-		Methods:     []grpc.MethodDesc{},
+		ServiceName: "nclink.NCLinkService",
+		HandlerType: (*NCLinkServiceServer)(nil),
+		Methods: []grpc.MethodDesc{
+			{
+				MethodName: "NCLinkAuth",
+				Handler:    _DUBBO_NCLinkService_NCLinkAuth_Handler,
+			},
+			{
+				MethodName: "NCLinkSendData",
+				Handler:    _DUBBO_NCLinkService_NCLinkSendData_Handler,
+			},
+			{
+				MethodName: "NCLinkGetMeta",
+				Handler:    _DUBBO_NCLinkService_NCLinkGetMeta_Handler,
+			},
+		},
 		Streams: []grpc.StreamDesc{
 			{
 				StreamName:    "NCLinkSubscribe",
-				Handler:       _DUBBO_NCLinkSubscribeService_NCLinkSubscribe_Handler,
+				Handler:       _DUBBO_NCLinkService_NCLinkSubscribe_Handler,
 				ServerStreams: true,
 			},
 		},

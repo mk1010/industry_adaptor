@@ -1,14 +1,13 @@
 syntax = "proto3";
 package nclink;
 
-import "google/protobuf/any.proto";
+//import "google/protobuf/any.proto";
 
-service NCLinkAuthService{
+service NCLinkService{
   rpc NCLinkAuth(NCLinkAuthReq) returns (NCLinkAuthResp);
-}
-
-service NCLinkSubscribeService{
   rpc NCLinkSubscribe(NCLinkTopicSub) returns (stream NCLinkTopicMessage);
+  rpc NCLinkSendData(NCLinkDataMessage) returns (NCLinkBaseResp);
+  rpc NCLinkGetMeta(NCLinkMetaDataReq) returns (NCLinkMetaDataResp);
 }
 
 message NCLinkTopicSub{
@@ -17,7 +16,7 @@ message NCLinkTopicSub{
 }
 
 message NCLinkTopicMessage{
-  uint32 type =1;
+  topic_message_kind message_kind =1;
   bytes payload =2;
 }
 
@@ -44,6 +43,22 @@ message NCLinkDataMessage{
   bytes payload =6;
 }
 
+message NCLinkMetaDataReq{
+  repeated string adaptor_id =1;
+  repeated string device_id =2;
+  repeated string component_id =3;
+  repeated string data_item_id =4;
+  repeated string sample_info_id =5;
+}
+
+message NCLinkMetaDataResp{
+  repeated string adaptor_id =1;
+  repeated string device_id =2;
+  repeated string component_id =3;
+  repeated string data_item_id =4;
+  repeated string sample_info_id =5;
+  NCLinkBaseResp base_resp =6;
+}
 
 //元数据描述，由IDL定义进行参考
 message NCLinkAdaptor{
@@ -116,4 +131,9 @@ enum data_kind{
 	Complex64 =13;
 	Complex128 =14;
   String =15;
+}
+
+enum topic_message_kind{
+  SetMeta =0;//payloads NCLinkMetaDataResp
+  GetMeta =1;//payloads NCLinkMetaDataReq
 }

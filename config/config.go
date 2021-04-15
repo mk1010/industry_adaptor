@@ -1,10 +1,11 @@
 package config
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
+
+	json "github.com/json-iterator/go"
 )
 
 type Config struct {

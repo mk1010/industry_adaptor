@@ -5,6 +5,7 @@ import (
 	"crypto/x509"
 	"encoding/binary"
 	"fmt"
+	"github/mk1010/industry_adaptor/nclink"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -205,4 +206,11 @@ func TestExe(t *testing.T) {
 	t.Log(g)
 	now := time.Now()
 	t.Log(now.Unix()*1e3 + int64(now.Nanosecond()/1e6))
+}
+
+func TestGrpc(t *testing.T) {
+	l := new(nclink.NCLinkAdaptor)
+	l.AdaptorId = "123"
+	b, err := json.Marshal(l)
+	t.Log(string(b), err)
 }

@@ -3,9 +3,8 @@ module github/mk1010/industry_adaptor
 require (
 	github.com/StackExchange/wmi v0.0.0-20210224194228-fe8f1750fd46 // indirect
 	github.com/apache/dubbo-go v1.5.6-rc1
-	github.com/apache/dubbo-go-hessian2 v1.9.1
+	github.com/apache/dubbo-go-hessian2 v1.9.1 // indirect
 	github.com/dubbogo/gost v1.11.3
-	github.com/eclipse/paho.mqtt.golang v1.3.2
 	github.com/glycerine/go-unsnap-stream v0.0.0-20210130063903-47dfef350d96 // indirect
 	github.com/go-ole/go-ole v1.2.5 // indirect
 	github.com/golang/mock v1.5.0 // indirect
@@ -27,6 +26,7 @@ require (
 	github.com/tklauser/go-sysconf v0.3.5 // indirect
 	github.com/willf/bitset v1.1.11 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
+	go.uber.org/zap v1.16.0
 	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5 // indirect
 	golang.org/x/mod v0.4.2 // indirect
 	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4

@@ -18,45 +18,26 @@
 package main
 
 import (
-	"context"
-	"github/mk1010/industry_adaptor/nclink"
-	"os"
-	"time"
-
-	hessian "github.com/apache/dubbo-go-hessian2"
+	_ "github/mk1010/industry_adaptor/bash"
 
 	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
+
 	_ "github.com/apache/dubbo-go/cluster/loadbalance"
+
 	gxlog "github.com/dubbogo/gost/log"
 
 	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-	dubboConfig "github.com/apache/dubbo-go/config"
 
 	_ "github.com/apache/dubbo-go/filter/filter_impl"
+
 	_ "github.com/apache/dubbo-go/protocol/dubbo"
+
 	_ "github.com/apache/dubbo-go/registry/protocol"
+
 	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
-var userProvider = new(nclink.UserProvider)
-
-func init() {
-	dubboConfig.SetConsumerService(userProvider)
-	hessian.RegisterPOJO(&nclink.User{})
-}
-
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	hessian.RegisterPOJO(&nclink.User{})
-	dubboConfig.Load()
-	time.Sleep(3 * time.Second)
-	gxlog.CInfo("\n\n\nstart to test dubbo")
-	user := &nclink.User{}
-	err := userProvider.GetUser(context.TODO(), []interface{}{"A001"}, user)
-	if err != nil {
-		gxlog.CError("error: %v\n", err)
-		os.Exit(1)
-		return
-	}
-	gxlog.CInfo("response result: %v\n", user)
+	gxlog.CInfo("response result: %v\n", ":123")
 }
