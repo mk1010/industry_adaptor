@@ -5,7 +5,6 @@ import (
 	"crypto/x509"
 	"encoding/binary"
 	"fmt"
-	"github/mk1010/industry_adaptor/nclink"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -14,15 +13,12 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/mk1010/industry_adaptor/nclink"
+
+	"github.com/apache/dubbo-go/common/logger"
 	json "github.com/json-iterator/go"
 	"golang.org/x/net/http2"
 )
-
-var jsonString = `
-{
-	"name":"jcz\n"
-}
-`
 
 type mk struct {
 	Name string `default:"123" json:"name"`
@@ -36,7 +32,7 @@ func (m *mk) Hi(s string) string {
 func TestChan(t *testing.T) {
 	m := &mk{}
 	ret := reflect.ValueOf(m).MethodByName("Hi").IsValid()
-	err := json.Unmarshal([]byte(jsonString), m)
+	err := json.Unmarshal([]byte(""), m)
 	b, _ := json.Marshal(m)
 	s := string(b)
 	t.Log(err, m.Name, ret, s)
@@ -177,9 +173,11 @@ func testLittleEndian() {
 }
 
 func TestExe(t *testing.T) {
-	/*val := func() {
-		t.Log("execute")
-	}*/
+	/*
+		val := func() {
+			t.Log("execute")
+		}
+	*/
 	val := 1
 	rval := reflect.ValueOf(val)
 	if rval.Kind() == reflect.Func {
@@ -196,8 +194,7 @@ func TestExe(t *testing.T) {
 		},{
 			"reyee":"123"
 		}]
-	}
-	`
+	}`
 	m := make(map[string]interface{})
 	err := json.Unmarshal([]byte(jsonStrings), &m)
 	any := json.Get([]byte(jsonStrings), "ee", 0)
@@ -213,4 +210,6 @@ func TestGrpc(t *testing.T) {
 	l.AdaptorId = "123"
 	b, err := json.Marshal(l)
 	t.Log(string(b), err)
+	logger.Errorf("mk1", "234")
+	//	nclink.ErrorWrap(fmt.Errorf("mk"), "123")
 }

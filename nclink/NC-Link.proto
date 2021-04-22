@@ -52,11 +52,11 @@ message NCLinkMetaDataReq{
 }
 
 message NCLinkMetaDataResp{
-  repeated string adaptor_id =1;
-  repeated string device_id =2;
-  repeated string component_id =3;
-  repeated string data_item_id =4;
-  repeated string sample_info_id =5;
+  repeated NCLinkAdaptor adaptors =1;
+  repeated NCLinkDevice devices =2;
+  repeated NCLinkComponent components =3;
+  repeated NCLinkDataItem data_items =4;
+  repeated NCLinkSampleInfo sample_infos =5;
   NCLinkBaseResp base_resp =6;
 }
 

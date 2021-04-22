@@ -2,9 +2,21 @@ package service
 
 import (
 	"context"
-	"github/mk1010/industry_adaptor/config"
-	"github/mk1010/industry_adaptor/nclink"
 	"sync"
+
+	"github.com/mk1010/industry_adaptor/config"
+	"github.com/mk1010/industry_adaptor/nclink"
+
+	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
+	_ "github.com/apache/dubbo-go/cluster/loadbalance"
+	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
+	_ "github.com/apache/dubbo-go/filter/filter_impl"
+	_ "github.com/apache/dubbo-go/protocol/dubbo"
+	_ "github.com/apache/dubbo-go/protocol/grpc"
+	_ "github.com/apache/dubbo-go/registry/protocol"
+
+	// todo etcd?
+	_ "github.com/apache/dubbo-go/registry/zookeeper"
 )
 
 var serviceInitOnce sync.Once
@@ -20,15 +32,15 @@ type NcLinkSubClient interface {
 	Recv() (*nclink.NCLinkTopicMessage, error)
 }
 
-// 接口类型，将dubbo封装成MQTT的方法
+// impl类型 提供service mesh 屏蔽底层细节
 var NCLinkClient NcLinkService
 
 func Init() (err error) {
 	serviceInitOnce.Do(func() {
 		switch config.ConfInstance.ConnectMethod {
-		case "DUBBO":
+		case "dubbo":
 			err = dubboInit()
-		case "HTTP":
+		case "http":
 			// todo
 		default:
 			panic("Error ConnectMethod")

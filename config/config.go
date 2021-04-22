@@ -14,8 +14,6 @@ type Config struct {
 	RedisClusterName string              `json:"redis_cluster_name"`
 	RedisHosts       []string            `json:"redis_hosts"`
 	ConnectMethod    string              `json:"connect_method"`
-	LogicID          string              `json:"logic_id"`
-	MQTTPassword     string              `json:"mqtt_password"`
 }
 
 type DBConfig struct {
@@ -33,7 +31,7 @@ type DBConnectInfo struct {
 	DefaultHostPort string `json:"default_host_port"`
 }
 
-var ConfInstance *Config
+var ConfInstance = new(Config)
 
 func isProduct() bool {
 	return ConfInstance.Env == "prod"

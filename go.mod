@@ -1,10 +1,10 @@
-module github/mk1010/industry_adaptor
+module github.com/mk1010/industry_adaptor
 
 require (
 	github.com/StackExchange/wmi v0.0.0-20210224194228-fe8f1750fd46 // indirect
 	github.com/apache/dubbo-go v1.5.6-rc1
 	github.com/apache/dubbo-go-hessian2 v1.9.1 // indirect
-	github.com/dubbogo/gost v1.11.3
+	github.com/dubbogo/gost v1.11.3 // indirect
 	github.com/glycerine/go-unsnap-stream v0.0.0-20210130063903-47dfef350d96 // indirect
 	github.com/go-ole/go-ole v1.2.5 // indirect
 	github.com/golang/mock v1.5.0 // indirect
@@ -34,7 +34,7 @@ require (
 	google.golang.org/grpc v1.33.1
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/ini.v1 v1.62.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 	honnef.co/go/tools v0.1.3 // indirect
 )
 

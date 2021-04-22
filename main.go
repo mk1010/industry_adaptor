@@ -18,26 +18,48 @@
 package main
 
 import (
-	_ "github/mk1010/industry_adaptor/bash"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
-	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
+	_ "github.com/mk1010/industry_adaptor/bash"
+	"github.com/mk1010/industry_adaptor/service"
+	"github.com/mk1010/industry_adaptor/task"
 
-	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-
-	gxlog "github.com/dubbogo/gost/log"
-
-	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
-
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
-
-	_ "github.com/apache/dubbo-go/registry/protocol"
-
-	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	"github.com/apache/dubbo-go/common/logger"
 )
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
-	gxlog.CInfo("response result: %v\n", ":123")
+	logger.Info("service start \n")
+	err := service.Init()
+	if err != nil {
+		panic(err)
+	}
+	task.Init()
+	initSignal()
+}
+
+func initSignal() {
+	signals := make(chan os.Signal, 1)
+	// It is not possible to block SIGKILL or syscall.SIGSTOP
+	signal.Notify(signals, os.Interrupt, os.Kill, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	for {
+		sig := <-signals
+		logger.Infof("get signal %s", sig.String())
+		switch sig {
+		case syscall.SIGHUP:
+			// reload()
+		default:
+			time.AfterFunc(time.Duration(3*time.Second), func() {
+				logger.Warnf("app exit now by force...")
+				os.Exit(1)
+			})
+
+			// The program exits normally or timeout forcibly exits.
+			logger.Info("provider app exit now...")
+			return
+		}
+	}
 }

@@ -2,20 +2,11 @@ package service
 
 import (
 	"context"
-	"github/mk1010/industry_adaptor/nclink"
 	"time"
 
-	_ "github.com/apache/dubbo-go/cluster/cluster_impl"
-	_ "github.com/apache/dubbo-go/cluster/loadbalance"
-	_ "github.com/apache/dubbo-go/common/proxy/proxy_factory"
-	"github.com/apache/dubbo-go/config"
-	_ "github.com/apache/dubbo-go/filter/filter_impl"
-	_ "github.com/apache/dubbo-go/protocol/dubbo"
-	_ "github.com/apache/dubbo-go/protocol/grpc"
-	_ "github.com/apache/dubbo-go/registry/protocol"
+	"github.com/mk1010/industry_adaptor/nclink"
 
-	// todo etcd?
-	_ "github.com/apache/dubbo-go/registry/zookeeper"
+	"github.com/apache/dubbo-go/config"
 	"google.golang.org/grpc"
 )
 
