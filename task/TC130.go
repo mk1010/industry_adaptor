@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/mk1010/industry_adaptor/nclink"
+	"github.com/mk1010/industry_adaptor/nclink/util"
 	"github.com/mk1010/industry_adaptor/service"
 
 	"github.com/apache/dubbo-go/common/logger"
@@ -53,7 +54,7 @@ func (t *TC130) Start(ctx context.Context) (err error) {
 	NCLinkDeviceMeta[t.DeviceId] = t.DeviceMeta
 	ch := (make(chan struct{}))
 	t.done = &ch
-	nclink.GoSafely(func() {
+	util.GoSafely(func() {
 		for {
 			select {
 			case <-ch:

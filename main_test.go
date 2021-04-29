@@ -213,3 +213,11 @@ func TestGrpc(t *testing.T) {
 	logger.Errorf("mk1", "234")
 	//	nclink.ErrorWrap(fmt.Errorf("mk"), "123")
 }
+
+func TestTimeOut(t *testing.T) {
+	ticker := time.NewTicker(100 * time.Millisecond)
+
+	select {
+	case <-ticker.C:
+	}
+}

@@ -22,16 +22,18 @@ func dubboInit() error {
 			return funcSub(ctx, in)
 		},
 		grpcNCLinkServiceClientImpl.NCLinkSendData,
+		grpcNCLinkServiceClientImpl.NCLinkSendBasicData,
 		grpcNCLinkServiceClientImpl.NCLinkGetMeta,
 	}
 	return nil
 }
 
 type GrpcNCLinkServiceClientImpl struct {
-	NCLinkAuth      func(ctx context.Context, in *nclink.NCLinkAuthReq, out *nclink.NCLinkAuthResp) error
-	NCLinkSubscribe func(ctx context.Context, in *nclink.NCLinkTopicSub) (nclink.NCLinkService_NCLinkSubscribeClient, error)
-	NCLinkSendData  func(ctx context.Context, in *nclink.NCLinkDataMessage, out *nclink.NCLinkBaseResp) error
-	NCLinkGetMeta   func(ctx context.Context, in *nclink.NCLinkMetaDataReq, out *nclink.NCLinkMetaDataResp) error
+	NCLinkAuth          func(ctx context.Context, in *nclink.NCLinkAuthReq, out *nclink.NCLinkAuthResp) error
+	NCLinkSubscribe     func(ctx context.Context, in *nclink.NCLinkTopicSub) (nclink.NCLinkService_NCLinkSubscribeClient, error)
+	NCLinkSendData      func(ctx context.Context, in *nclink.NCLinkDataMessage, out *nclink.NCLinkBaseResp) error
+	NCLinkSendBasicData func(ctx context.Context, in *nclink.NCLinkTopicMessage, out *nclink.NCLinkBaseResp) error
+	NCLinkGetMeta       func(ctx context.Context, in *nclink.NCLinkMetaDataReq, out *nclink.NCLinkMetaDataResp) error
 }
 
 func (u *GrpcNCLinkServiceClientImpl) Reference() string {

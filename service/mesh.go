@@ -22,10 +22,11 @@ import (
 var serviceInitOnce sync.Once
 
 type NcLinkService struct {
-	NCLinkAuth      func(ctx context.Context, in *nclink.NCLinkAuthReq, out *nclink.NCLinkAuthResp) error
-	NCLinkSubscribe func(ctx context.Context, in *nclink.NCLinkTopicSub) (NcLinkSubClient, error)
-	NCLinkSendData  func(ctx context.Context, in *nclink.NCLinkDataMessage, out *nclink.NCLinkBaseResp) error
-	NCLinkGetMeta   func(ctx context.Context, in *nclink.NCLinkMetaDataReq, out *nclink.NCLinkMetaDataResp) error
+	NCLinkAuth          func(ctx context.Context, in *nclink.NCLinkAuthReq, out *nclink.NCLinkAuthResp) error
+	NCLinkSubscribe     func(ctx context.Context, in *nclink.NCLinkTopicSub) (NcLinkSubClient, error)
+	NCLinkSendData      func(ctx context.Context, in *nclink.NCLinkDataMessage, out *nclink.NCLinkBaseResp) error
+	NCLinkSendBasicData func(ctx context.Context, in *nclink.NCLinkTopicMessage, out *nclink.NCLinkBaseResp) error
+	NCLinkGetMeta       func(ctx context.Context, in *nclink.NCLinkMetaDataReq, out *nclink.NCLinkMetaDataResp) error
 }
 
 type NcLinkSubClient interface {

@@ -7,6 +7,7 @@ service NCLinkService{
   rpc NCLinkAuth(NCLinkAuthReq) returns (NCLinkAuthResp);
   rpc NCLinkSubscribe(NCLinkTopicSub) returns (stream NCLinkTopicMessage);
   rpc NCLinkSendData(NCLinkDataMessage) returns (NCLinkBaseResp);
+  rpc NCLinkSendBasicData(NCLinkTopicMessage) returns (NCLinkBaseResp);
   rpc NCLinkGetMeta(NCLinkMetaDataReq) returns (NCLinkMetaDataResp);
 }
 
@@ -16,7 +17,7 @@ message NCLinkTopicSub{
 }
 
 message NCLinkTopicMessage{
-  topic_message_kind message_kind =1;
+  int32 message_kind =1;
   bytes payload =2;
 }
 
@@ -39,8 +40,12 @@ message NCLinkDataMessage{
   string device_id =2;
   string component_id =3;
   string data_item_id =4;
-  int64 unix_time_ms =5;//不附加时区
-  bytes payload =6;
+  repeated NCLinkPayloads payloads =5;
+}
+
+message NCLinkPayloads{
+  int64 unix_time_ms =1;//不附加时区
+  bytes payload =2;
 }
 
 message NCLinkMetaDataReq{
@@ -100,11 +105,7 @@ message NCLinkDataItem{
   string data_item_type =3;
   string description =4;
   map<string,data_kind> data_type =5;
-}
-
-message NCLinkDataTypeUnit{
-  data_kind kind =1;
-  string unit =2;
+  map<string,string> data_unit=6;
 }
 
 message NCLinkSampleInfo{
@@ -133,7 +134,7 @@ enum data_kind{
   String =15;
 }
 
-enum topic_message_kind{
+enum adaptor_message_kind{
   SetMeta =0;//payloads NCLinkMetaDataResp
   GetMeta =1;//payloads NCLinkMetaDataReq
 }
