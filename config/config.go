@@ -14,6 +14,7 @@ type Config struct {
 	RedisClusterName string              `json:"redis_cluster_name"`
 	RedisHosts       []string            `json:"redis_hosts"`
 	ConnectMethod    string              `json:"connect_method"`
+	AdaptorID        string              `json:"adaptor_id"`
 }
 
 type DBConfig struct {

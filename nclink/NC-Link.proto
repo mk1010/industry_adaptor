@@ -18,7 +18,7 @@ message NCLinkTopicSub{
 
 message NCLinkTopicMessage{
   int32 message_kind =1;
-  bytes payload =2;
+  NCLinkPayloads payload =2;
 }
 
 message NCLinkAuthReq {

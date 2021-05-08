@@ -6,11 +6,12 @@ import (
 	"sync"
 
 	"github.com/mk1010/industry_adaptor/nclink"
-	"github.com/mk1010/industry_adaptor/nclink/util"
 	"github.com/mk1010/industry_adaptor/service"
 
 	"github.com/apache/dubbo-go/common/logger"
 )
+
+func deviceInit()
 
 type TC130 struct {
 	DeviceId   string
@@ -51,18 +52,8 @@ func (t *TC130) Start(ctx context.Context) (err error) {
 	if t.done != nil && (*t.done) != nil {
 		close(*t.done)
 	}
-	NCLinkDeviceMeta[t.DeviceId] = t.DeviceMeta
+	NCLinkDeviceMeta.Store(t.DeviceId, t.DeviceMeta)
 	ch := (make(chan struct{}))
 	t.done = &ch
-	util.GoSafely(func() {
-		for {
-			select {
-			case <-ch:
-				return
-			default:
-				// time.Sleep(d time.Duration)
-			}
-		}
-	}, nil)
 	return nil
 }

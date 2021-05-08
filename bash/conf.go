@@ -63,6 +63,7 @@ var adaptor_conf = `
 
     ],
     "env":"prod",
-    "connect_method":"dubbo"
+    "connect_method":"dubbo",
+    "adaptor_id":"ADA-23"
 }
 `

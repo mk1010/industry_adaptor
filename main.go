@@ -28,6 +28,7 @@ import (
 	"github.com/mk1010/industry_adaptor/task"
 
 	"github.com/apache/dubbo-go/common/logger"
+	"github.com/apache/dubbo-go/config"
 )
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
@@ -38,7 +39,8 @@ func main() {
 		panic(err)
 	}
 	task.Init()
-	initSignal()
+	// initSignal()
+	config.GracefulShutdownInit()
 }
 
 func initSignal() {

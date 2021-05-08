@@ -11,7 +11,7 @@ import (
 )
 
 func dubboInit() error {
-	grpcNCLinkServiceClientImpl := new(GrpcNCLinkServiceClientImpl)
+	grpcNCLinkServiceClientImpl := new(GrpcNCLinkServiceImpl)
 	config.SetConsumerService(grpcNCLinkServiceClientImpl)
 	config.Load()
 	time.Sleep(3 * time.Second)
@@ -28,7 +28,7 @@ func dubboInit() error {
 	return nil
 }
 
-type GrpcNCLinkServiceClientImpl struct {
+type GrpcNCLinkServiceImpl struct {
 	NCLinkAuth          func(ctx context.Context, in *nclink.NCLinkAuthReq, out *nclink.NCLinkAuthResp) error
 	NCLinkSubscribe     func(ctx context.Context, in *nclink.NCLinkTopicSub) (nclink.NCLinkService_NCLinkSubscribeClient, error)
 	NCLinkSendData      func(ctx context.Context, in *nclink.NCLinkDataMessage, out *nclink.NCLinkBaseResp) error
@@ -36,10 +36,10 @@ type GrpcNCLinkServiceClientImpl struct {
 	NCLinkGetMeta       func(ctx context.Context, in *nclink.NCLinkMetaDataReq, out *nclink.NCLinkMetaDataResp) error
 }
 
-func (u *GrpcNCLinkServiceClientImpl) Reference() string {
+func (u *GrpcNCLinkServiceImpl) Reference() string {
 	return "GrpcNCLinkServiceClientImpl"
 }
 
-func (u *GrpcNCLinkServiceClientImpl) GetDubboStub(cc *grpc.ClientConn) nclink.NCLinkServiceClient {
+func (u *GrpcNCLinkServiceImpl) GetDubboStub(cc *grpc.ClientConn) nclink.NCLinkServiceClient {
 	return nclink.NewNCLinkServiceClient(cc)
 }
