@@ -7,6 +7,7 @@ import (
 	"github.com/mk1010/industry_adaptor/config"
 	"github.com/mk1010/industry_adaptor/nclink"
 	"github.com/mk1010/industry_adaptor/service"
+	"github.com/mk1010/industry_adaptor/task/adaptor"
 )
 
 func Init() {
@@ -20,7 +21,7 @@ func Init() {
 		panic(err)
 	}
 	adaptorMeta := metaResp.Adaptors[0]
-	if err := adaptorInit(adaptorMeta); err != nil {
+	if err := adaptor.AdaptorInit(adaptorMeta); err != nil {
 		panic(err)
 	}
 }

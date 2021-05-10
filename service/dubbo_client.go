@@ -15,12 +15,9 @@ func dubboInit() error {
 	config.SetConsumerService(grpcNCLinkServiceClientImpl)
 	config.Load()
 	time.Sleep(3 * time.Second)
-	funcSub := grpcNCLinkServiceClientImpl.NCLinkSubscribe
 	NCLinkClient = NcLinkService{
 		grpcNCLinkServiceClientImpl.NCLinkAuth,
-		func(ctx context.Context, in *nclink.NCLinkTopicSub) (NcLinkSubClient, error) {
-			return funcSub(ctx, in)
-		},
+		grpcNCLinkServiceClientImpl.NCLinkSubscribe,
 		grpcNCLinkServiceClientImpl.NCLinkSendData,
 		grpcNCLinkServiceClientImpl.NCLinkSendBasicData,
 		grpcNCLinkServiceClientImpl.NCLinkGetMeta,

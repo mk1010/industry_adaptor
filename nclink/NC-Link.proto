@@ -13,7 +13,8 @@ service NCLinkService{
 
 message NCLinkTopicSub{
   string topic =1;
-  repeated string tags =2;
+  string adaptor_id=2;
+  repeated string tags =3;
 }
 
 message NCLinkTopicMessage{
@@ -72,7 +73,7 @@ message NCLinkAdaptor{
   string adaptor_type =3;
   string description =4;
   repeated string device_id =5;
-  repeated bytes device_config =6; //由用户自定义
+  bytes config =6; //由用户自定义
 }
 
 message NCLinkDevice{
@@ -82,7 +83,7 @@ message NCLinkDevice{
   string description =4;
   string device_group =5;
   repeated string component_id =6;
-  repeated bytes component_config =7;
+  bytes config =7;
   repeated NCLinkDataItem data_item =8;
 }
 
@@ -91,7 +92,8 @@ message NCLinkComponent{
   string name =2;
   string component_type =3;
   string description =4;
-  repeated NCLinkDataInfo data_info=5;
+  bytes config =5;
+  repeated NCLinkDataInfo data_info=6;
 }
 
 message NCLinkDataInfo{

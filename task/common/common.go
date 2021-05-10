@@ -1,4 +1,4 @@
-package task
+package common
 
 import (
 	"context"
@@ -19,7 +19,7 @@ var NCLinkDataItemMeta = sync.Map{} // make(map[string]*nclink.NCLinkDataItem)
 
 var NCLinkSampleInfoMeta = sync.Map{} // make(map[string]*nclink.NCLinkSampleInfo)
 
-var NCLinkAdaptoMap = make(map[string]NCLinkAdaptorAPI)
+var NCLinkAdaptorMap = make(map[string]NCLinkAdaptorAPI)
 
 var NCLinkDeviceMap = make(map[string]NCLinkDeviceAPI)
 
@@ -27,18 +27,18 @@ var NCLinkComponentMap = make(map[string]NCLinkComponentAPI)
 
 type NCLinkAdaptorAPI interface {
 	Start(ctx context.Context) (err error)
-	UpdateMeta(meta *nclink.NCLinkAdaptor) error
-	SetID(string)
+	UpdateMeta(ctx context.Context, meta *nclink.NCLinkAdaptor) error
+	Shutdown() error
 }
 
 type NCLinkDeviceAPI interface {
-	Start(ctx context.Context) (err error)
-	UpdateMeta(meta *nclink.NCLinkDevice) error
-	SetID(string)
+	Start(ctx context.Context, id string, config interface{}) (err error)
+	UpdateMeta(ctx context.Context, meta *nclink.NCLinkDevice) error
+	Shutdown() error
 }
 
 type NCLinkComponentAPI interface {
-	Start(ctx context.Context) (err error)
-	UpdateMeta(meta *nclink.NCLinkComponent) error
-	SetID(string)
+	Start(ctx context.Context, id string, config interface{}) (err error)
+	UpdateMeta(ctx context.Context, meta *nclink.NCLinkComponent) error
+	Shutdown() error
 }

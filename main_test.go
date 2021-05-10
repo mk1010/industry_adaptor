@@ -215,9 +215,18 @@ func TestGrpc(t *testing.T) {
 }
 
 func TestTimeOut(t *testing.T) {
-	ticker := time.NewTicker(100 * time.Millisecond)
+	// ticker := time.NewTicker(100 * time.Millisecond)
 
-	select {
-	case <-ticker.C:
+	// select {
+	// case <-ticker.C:
+	// }
+	deviceConfig := make(map[string]interface{})
+	s := `
+	{
+		"mk":123,
+		"tcc":"77"
 	}
+	`
+	json.Unmarshal([]byte(s), &deviceConfig)
+	t.Log(deviceConfig["4545"])
 }

@@ -1,4 +1,4 @@
-package task
+package device
 
 import (
 	"context"
@@ -7,11 +7,14 @@ import (
 
 	"github.com/mk1010/industry_adaptor/nclink"
 	"github.com/mk1010/industry_adaptor/service"
+	"github.com/mk1010/industry_adaptor/task/common"
 
 	"github.com/apache/dubbo-go/common/logger"
 )
 
-func deviceInit()
+func DeviceInit(deviceMeta *nclink.NCLinkDevice, adaptorID string) (common.NCLinkDeviceAPI, error) {
+	return nil, nil
+}
 
 type TC130 struct {
 	DeviceId   string
@@ -52,7 +55,7 @@ func (t *TC130) Start(ctx context.Context) (err error) {
 	if t.done != nil && (*t.done) != nil {
 		close(*t.done)
 	}
-	NCLinkDeviceMeta.Store(t.DeviceId, t.DeviceMeta)
+	common.NCLinkDeviceMeta.Store(t.DeviceId, t.DeviceMeta)
 	ch := (make(chan struct{}))
 	t.done = &ch
 	return nil
