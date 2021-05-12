@@ -60,6 +60,35 @@ func (t *NCLinkCommonComponent) GetDataInfoApi(dataItemID string) common.NCLinkD
 }
 
 func (t *NCLinkCommonComponent) UpdateMeta(ctx context.Context, meta *nclink.NCLinkComponent) (err error) {
+	if meta == nil {
+		return t.Shutdown()
+	}
+	DataInfoMetaMap := make(map[string]*nclink.NCLinkDataInfo, len(meta.DataInfo))
+	for _, dataInfoMeta := range meta.DataInfo {
+		DataInfoMetaMap[dataInfoMeta.DataItem.DataItemId] = dataInfoMeta
+	}
+	t.mu.Lock()
+	defer t.mu.Unlock()
+	for DataInfoID, DataInfoAPI := range t.DataInfoMap {
+		if _, ok := DataInfoMetaMap[DataInfoID]; !ok {
+			e := DataInfoAPI.Shutdown()
+			if e != nil {
+				err = e
+			}
+			delete(t.DataInfoMap, DataInfoID)
+		}
+	}
+	for DataInfoID, DataInfoMeta := range DataInfoMetaMap {
+		if _, ok := t.DataInfoMap[DataInfoID]; !ok {
+			DataInfoAPI, e := DataInfoInit(ctx, t.AdaptorID, t.DeviceID, t.ComponentID, DataInfoMeta)
+			if e != nil {
+				err = e
+				continue
+			}
+			t.DataInfoMap[DataInfoID] = DataInfoAPI
+		}
+	}
+	t.ComponentMeta = meta
 	return
 }
 

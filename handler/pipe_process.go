@@ -136,6 +136,7 @@ func (t *NCLinkCommonProcess) Start(ctx context.Context) error {
 			}
 		}
 	}, nil)
+	common.NClinkInstanceMap.Store(t.ProcessName, t)
 	return nil
 }
 
