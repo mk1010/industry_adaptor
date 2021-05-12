@@ -1,7 +1,9 @@
 package bash
 
 import (
+	"net"
 	"os"
+	"strings"
 
 	adaptor_config "github.com/mk1010/industry_adaptor/config"
 
@@ -36,4 +38,18 @@ func init() {
 		panic(err)
 	}
 	adaptor_conf = ""
+}
+
+func getPublicIP() string {
+	conn, err := net.Dial("udp", "8.8.8.8:53")
+	if err != nil {
+		logger.Error(err)
+		return ""
+	}
+	defer conn.Close()
+	s := conn.LocalAddr().String()
+	if index := strings.LastIndex(s, ":"); index != -1 {
+		s = s[:index]
+	}
+	return s
 }

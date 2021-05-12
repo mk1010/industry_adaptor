@@ -8,10 +8,9 @@ import (
 	"github.com/apache/dubbo-go/common/logger"
 	"github.com/mk1010/industry_adaptor/nclink"
 	"github.com/mk1010/industry_adaptor/service"
-	"github.com/mk1010/industry_adaptor/task/common"
 )
 
-func AdaptorInit(adaMeta *nclink.NCLinkAdaptor) (err error) {
+func AdaptorInit(ctx context.Context, adaMeta *nclink.NCLinkAdaptor) (err error) {
 	if adaMeta == nil {
 		err = fmt.Errorf("适配器元数据为空")
 		logger.Error(err)
@@ -21,19 +20,18 @@ func AdaptorInit(adaMeta *nclink.NCLinkAdaptor) (err error) {
 	case "nclink_commmon_adaptor":
 		{
 			commonAda := &NCLinkCommonAdaptor{
-				AdaptorID: adaMeta.AdaptorId,
-				MetaData:  adaMeta,
+				AdaptorID:   adaMeta.AdaptorId,
+				AdaptorMeta: adaMeta,
 			}
 			err = commonAda.Start(context.Background())
 			if err != nil {
 				return err
 			}
-			common.NCLinkAdaptorMap[commonAda.AdaptorID] = commonAda
 			return
 		}
 	default:
 		{
-			err = fmt.Errorf("未知的适配器类型元数据")
+			err = fmt.Errorf("未知的适配器类型元数据 %+v", adaMeta)
 			logger.Error(err)
 			return
 		}

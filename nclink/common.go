@@ -7,3 +7,5 @@ const (
 const (
 	CommandTopic = "nclink_command"
 )
+
+const TimeFormatYYYYMMDDHHMMSSMMM = "20060102150405999"

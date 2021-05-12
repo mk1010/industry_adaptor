@@ -10,8 +10,7 @@ import (
 	"github.com/mk1010/industry_adaptor/task/adaptor"
 )
 
-func Init() {
-	ctx := context.Background()
+func Init(ctx context.Context) {
 	metaResp := new(nclink.NCLinkMetaDataResp)
 	err := service.NCLinkClient.NCLinkGetMeta(ctx, &nclink.NCLinkMetaDataReq{
 		AdaptorId: []string{config.ConfInstance.AdaptorID},
@@ -21,7 +20,7 @@ func Init() {
 		panic(err)
 	}
 	adaptorMeta := metaResp.Adaptors[0]
-	if err := adaptor.AdaptorInit(adaptorMeta); err != nil {
+	if err := adaptor.AdaptorInit(ctx, adaptorMeta); err != nil {
 		panic(err)
 	}
 }

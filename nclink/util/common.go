@@ -30,6 +30,10 @@ func GoSafely(handler func(), catchFunc func(r interface{})) {
 	}()
 }
 
+func TimeToUnixMs(t time.Time) int64 {
+	return t.Unix()*1000 + int64(t.Nanosecond()/10000000)
+}
+
 /*
 func ErrorWrap(err error, msg string) error {
 	logger.Errorf("error:%v msg:%s\n%+v", err, msg, callers())

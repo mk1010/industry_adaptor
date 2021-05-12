@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/binary"
@@ -9,6 +10,7 @@ import (
 	"net"
 	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 	"unsafe"
@@ -229,4 +231,27 @@ func TestTimeOut(t *testing.T) {
 	`
 	json.Unmarshal([]byte(s), &deviceConfig)
 	t.Log(deviceConfig["4545"])
+	t.Log(func() string {
+		conn, err := net.Dial("udp", "8.8.0.8:53")
+		if err != nil {
+			logger.Error(err)
+			return ""
+		}
+		defer conn.Close()
+		s := conn.LocalAddr().String()
+		if index := strings.LastIndex(s, ":"); index != -1 {
+			s = s[:index]
+		}
+		return s
+	}())
+}
+
+func TestReadString(t *testing.T) {
+	s := "hello mk!\nhello t\n1234"
+	b := bytes.NewBuffer([]byte(s))
+	t.Log(b.ReadString('\n'))
+	t.Log(b.ReadString('\n'))
+	var val int32
+	err := binary.Read(b, binary.BigEndian, &val)
+	t.Log(val, err)
 }

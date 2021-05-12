@@ -9,21 +9,24 @@ import (
 
 // 存放公共变量
 
-var NCLinkAdaptorMeta = sync.Map{} // make(map[string]*nclink.NCLinkAdaptor)
+// 存在内存泄露 不使用  原功能通过反射实现
+// var NCLinkAdaptorMeta = sync.Map{} // make(map[string]*nclink.NCLinkAdaptor)
 
-var NCLinkDeviceMeta = sync.Map{} // make(map[string]*nclink.NCLinkDevice)
+// var NCLinkDeviceMeta = sync.Map{} // make(map[string]*nclink.NCLinkDevice)
 
-var NCLinkComponentMeta = sync.Map{} // make(map[string]*nclink.NCLinkComponent)
+// var NCLinkComponentMeta = sync.Map{} // make(map[string]*nclink.NCLinkComponent)
 
-var NCLinkDataItemMeta = sync.Map{} // make(map[string]*nclink.NCLinkDataItem)
+// var NCLinkDataItemMeta = make(map[string]*nclink.NCLinkDataItem)
 
-var NCLinkSampleInfoMeta = sync.Map{} // make(map[string]*nclink.NCLinkSampleInfo)
+// var NCLinkSampleInfoMeta = make(map[string]*nclink.NCLinkSampleInfo)
 
-var NCLinkAdaptorMap = make(map[string]NCLinkAdaptorAPI)
+var NCLinkAdaptorMap = sync.Map{} // make(map[string]NCLinkAdaptorAPI)
 
-var NCLinkDeviceMap = make(map[string]NCLinkDeviceAPI)
+var NCLinkDeviceMap = sync.Map{} // make(map[string]NCLinkDeviceAPI)
 
-var NCLinkComponentMap = make(map[string]NCLinkComponentAPI)
+var NCLinkComponentMap = sync.Map{} // make(map[string]NCLinkComponentAPI)
+
+var NClinkInstanceMap = sync.Map{} // make(map[string]NCLinkInstanceAPI)
 
 type NCLinkAdaptorAPI interface {
 	Start(ctx context.Context) (err error)
@@ -32,13 +35,27 @@ type NCLinkAdaptorAPI interface {
 }
 
 type NCLinkDeviceAPI interface {
-	Start(ctx context.Context, id string, config interface{}) (err error)
+	Start(ctx context.Context) (err error)
 	UpdateMeta(ctx context.Context, meta *nclink.NCLinkDevice) error
 	Shutdown() error
 }
 
 type NCLinkComponentAPI interface {
-	Start(ctx context.Context, id string, config interface{}) (err error)
+	Start(ctx context.Context) (err error)
 	UpdateMeta(ctx context.Context, meta *nclink.NCLinkComponent) error
+	GetDataInfoApi(ctx, dataInfoID string) NCLinkDataInfoAPI
 	Shutdown() error
+}
+
+type NCLinkDataInfoAPI interface {
+	Start(ctx context.Context) (err error)
+	SendData(data []byte) error
+	UpdateMeta(ctx context.Context, meta *nclink.NCLinkDataInfo) error
+	Shutdown() error
+}
+
+type NCLinkInstanceAPI interface {
+	SendData(msg *nclink.NCLinkTopicMessage) error
+	RecvRegister(deviceID, componentID, dataInfoID string, dataAPi NCLinkDataInfoAPI) error
+	RecvUnRegister(deviceID, componentID, dataInfoID string, dataAPi NCLinkDataInfoAPI) error
 }

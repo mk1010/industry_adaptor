@@ -18,6 +18,7 @@
 package main
 
 import (
+	"context"
 	"os"
 	"os/signal"
 	"syscall"
@@ -38,7 +39,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	task.Init()
+	task.Init(context.Background())
 	// initSignal()
 	config.GracefulShutdownInit()
 }
