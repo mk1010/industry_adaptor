@@ -62,12 +62,12 @@ func (n *NCLinkCommonDataInfo) listen(ctx context.Context) {
 				//	logger.Errorf("数据解析失败  datainfo:%v bytes:%v",n,data)
 				//	continue
 				//}
-				//这里是将其视为小头端数据流示例
+				//这里是将其视为大头端数据流示例
 				var val interface{}
 				var err error
 				byteBuffer := bytes.NewBuffer(data)
 				for _, item := range n.DataInfo.DataItem.Items {
-					val, err = GetFiledValueLittleEnd(item.Kind, byteBuffer)
+					val, err = GetFiledValueBigEnd(item.Kind, byteBuffer)
 					if err != nil {
 						logger.Errorf("数据解析失败 origin data:%v item:%v", originData, item)
 						continue

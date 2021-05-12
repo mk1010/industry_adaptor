@@ -24,19 +24,21 @@ import (
 	"syscall"
 	"time"
 
-	_ "github.com/mk1010/industry_adaptor/bash"
-	"github.com/mk1010/industry_adaptor/service"
-	"github.com/mk1010/industry_adaptor/task"
-
 	"github.com/apache/dubbo-go/common/logger"
 	"github.com/apache/dubbo-go/config"
+	_ "github.com/mk1010/industry_adaptor/bash"
+	"github.com/mk1010/industry_adaptor/handler"
+	"github.com/mk1010/industry_adaptor/service"
+	"github.com/mk1010/industry_adaptor/task"
 )
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
 func main() {
 	logger.Info("service start \n")
-	err := service.Init()
-	if err != nil {
+	if err := service.Init(); err != nil {
+		panic(err)
+	}
+	if err := handler.Init(context.Background()); err != nil {
 		panic(err)
 	}
 	task.Init(context.Background())

@@ -104,12 +104,12 @@ func (t *NCLinkCommonDevice) UpdateMeta(ctx context.Context, meta *nclink.NCLink
 func (t *NCLinkCommonDevice) Shutdown() (err error) {
 	t.mu.Lock()
 	defer t.mu.Unlock()
-	for deviceID, device := range t.ComponentMap {
-		e := device.Shutdown()
+	for componentID, component := range t.ComponentMap {
+		e := component.Shutdown()
 		if err != nil {
 			err = e
 		}
-		delete(t.ComponentMap, deviceID)
+		delete(t.ComponentMap, componentID)
 	}
 	// 这里是高危操作 有必要注释下
 	// 首先无条件删除当前存在的键值对，并把当前键值对返回

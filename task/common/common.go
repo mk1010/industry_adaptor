@@ -43,7 +43,7 @@ type NCLinkDeviceAPI interface {
 type NCLinkComponentAPI interface {
 	Start(ctx context.Context) (err error)
 	UpdateMeta(ctx context.Context, meta *nclink.NCLinkComponent) error
-	GetDataInfoApi(ctx, dataInfoID string) NCLinkDataInfoAPI
+	GetDataInfoApi(dataInfoID string) NCLinkDataInfoAPI
 	Shutdown() error
 }
 

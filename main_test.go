@@ -6,6 +6,7 @@ import (
 	"crypto/x509"
 	"encoding/binary"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -247,11 +248,16 @@ func TestTimeOut(t *testing.T) {
 }
 
 func TestReadString(t *testing.T) {
-	s := "hello mk!\nhello t\n1234"
+	s := "hello mk!\nhello t\n123334"
 	b := bytes.NewBuffer([]byte(s))
 	t.Log(b.ReadString('\n'))
 	t.Log(b.ReadString('\n'))
-	var val int32
-	err := binary.Read(b, binary.BigEndian, &val)
-	t.Log(val, err)
+	buf := make([]byte, 3)
+	t.Log(io.ReadFull(b, buf))
+	t.Log(buf)
+}
+
+func TestSlice(t *testing.T) {
+	i := []int32{0, 1, 2, 3}
+	t.Log(i[4:])
 }
