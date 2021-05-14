@@ -84,7 +84,6 @@ message NCLinkDevice{
   string device_group =5;
   repeated string component_id =6;
   bytes config =7;
-  repeated NCLinkDataItem data_item =8;
 }
 
 message NCLinkComponent{
@@ -118,8 +117,8 @@ message NCLinkDataItemMin{
 message NCLinkSampleInfo{
   string sample_info_id =1;
   string sample_info_type =2;
-  int64 sampling_period =3;//单位毫秒 即每xx毫秒进行一次处理 如果设备为自主采样 无法设置该值会被忽略
-  int64 upload_period=4;
+  uint64 sampling_period =3;//单位毫秒 即每xx毫秒进行一次处理 如果设备为自主采样 无法设置该值会被忽略
+  uint64 upload_period=4;
 }
 
 enum data_kind{

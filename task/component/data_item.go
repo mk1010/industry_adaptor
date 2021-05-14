@@ -154,7 +154,7 @@ func (n *NCLinkCommonDataInfo) UpdateMeta(ctx context.Context, meta *nclink.NCLi
 	return nil
 }
 
-func (n *NCLinkCommonDataInfo) Shutdown() error {
+func (n *NCLinkCommonDataInfo) Shutdown() (err error) {
 	n.once.Do(func() {
 		close(n.done)
 		n.sendTimeTicker.Stop()
