@@ -38,10 +38,11 @@ message NCLinkBaseResp{
 
 message NCLinkDataMessage{
   string data_id =1; //全局唯一 参考uuid
-  string device_id =2;
-  string component_id =3;
-  string data_item_id =4;
-  repeated NCLinkPayloads payloads =5;
+  string adaptor_id =2;
+  string device_id =3;
+  string component_id =4;
+  string data_item_id =5;
+  repeated NCLinkPayloads payloads =6;
 }
 
 message NCLinkPayloads{
