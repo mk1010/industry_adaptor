@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/apache/dubbo-go/common/logger"
-	"github.com/google/uuid"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/mk1010/industry_adaptor/nclink"
 	"github.com/mk1010/industry_adaptor/nclink/util"
@@ -93,8 +92,6 @@ func (n *NCLinkCommonDataInfo) listen(ctx context.Context) {
 }
 
 func (n *NCLinkCommonDataInfo) sendData(ctx context.Context) {
-	var err error
-	var uuID uuid.UUID
 	var dataPayloads []*nclink.NCLinkPayloads
 	for {
 		select {
@@ -105,14 +102,8 @@ func (n *NCLinkCommonDataInfo) sendData(ctx context.Context) {
 				n.dataPayloads = nil
 				n.mu.Unlock()
 				resp := new(nclink.NCLinkBaseResp)
-				for {
-					uuID, err = uuid.NewUUID()
-					if err == nil {
-						break
-					}
-				}
 				in := &nclink.NCLinkDataMessage{
-					DataId:      fmt.Sprintf("%s%x", time.Now().Format(nclink.TimeFormatYYYYMMDDHHMMSSMMM), uuID),
+					DataId:      util.GetUuid(),
 					DeviceId:    n.DeviceID,
 					ComponentId: n.ComponentID,
 					DataItemId:  n.DataInfo.DataItem.DataItemId,

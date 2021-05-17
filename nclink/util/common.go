@@ -5,6 +5,9 @@ import (
 	"os"
 	"runtime/debug"
 	"time"
+
+	"github.com/google/uuid"
+	"github.com/mk1010/industry_adaptor/nclink"
 )
 
 func GoSafely(handler func(), catchFunc func(r interface{})) {
@@ -53,3 +56,15 @@ func callers() []uintptr {
 	return d
 }
 */
+
+func GetUuid() string {
+	var err error
+	var uuID uuid.UUID
+	for {
+		uuID, err = uuid.NewUUID()
+		if err == nil {
+			break
+		}
+	}
+	return fmt.Sprintf("%s%x", time.Now().Format(nclink.TimeFormatYYYYMMDDHHMMSSMMM), uuID)
+}

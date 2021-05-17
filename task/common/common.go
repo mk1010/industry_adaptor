@@ -31,18 +31,21 @@ var NClinkInstanceMap = sync.Map{} // make(map[string]NCLinkInstanceAPI)
 type NCLinkAdaptorAPI interface {
 	Start(ctx context.Context) (err error)
 	UpdateMeta(ctx context.Context, meta *nclink.NCLinkAdaptor) error
+	GetMeta() *nclink.NCLinkAdaptor
 	Shutdown() error
 }
 
 type NCLinkDeviceAPI interface {
 	Start(ctx context.Context) (err error)
 	UpdateMeta(ctx context.Context, meta *nclink.NCLinkDevice) error
+	GetMeta() *nclink.NCLinkDevice
 	Shutdown() error
 }
 
 type NCLinkComponentAPI interface {
 	Start(ctx context.Context) (err error)
 	UpdateMeta(ctx context.Context, meta *nclink.NCLinkComponent) error
+	GetMeta() *nclink.NCLinkComponent
 	GetDataInfoApi(dataInfoID string) NCLinkDataInfoAPI
 	Shutdown() error
 }

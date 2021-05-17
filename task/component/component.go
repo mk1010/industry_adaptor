@@ -92,6 +92,10 @@ func (t *NCLinkCommonComponent) UpdateMeta(ctx context.Context, meta *nclink.NCL
 	return
 }
 
+func (t *NCLinkCommonComponent) GetMeta() *nclink.NCLinkComponent {
+	return t.ComponentMeta
+}
+
 func (t *NCLinkCommonComponent) Shutdown() (err error) {
 	t.mu.Lock()
 	defer t.mu.Unlock()

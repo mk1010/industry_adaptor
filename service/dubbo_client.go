@@ -27,14 +27,14 @@ func dubboInit() error {
 
 type GrpcNCLinkServiceImpl struct {
 	NCLinkAuth          func(ctx context.Context, in *nclink.NCLinkAuthReq, out *nclink.NCLinkAuthResp) error
-	NCLinkSubscribe     func(ctx context.Context, in *nclink.NCLinkTopicSub) (nclink.NCLinkService_NCLinkSubscribeClient, error)
+	NCLinkSubscribe     func(ctx context.Context) (nclink.NCLinkService_NCLinkSubscribeClient, error)
 	NCLinkSendData      func(ctx context.Context, in *nclink.NCLinkDataMessage, out *nclink.NCLinkBaseResp) error
 	NCLinkSendBasicData func(ctx context.Context, in *nclink.NCLinkTopicMessage, out *nclink.NCLinkBaseResp) error
 	NCLinkGetMeta       func(ctx context.Context, in *nclink.NCLinkMetaDataReq, out *nclink.NCLinkMetaDataResp) error
 }
 
 func (u *GrpcNCLinkServiceImpl) Reference() string {
-	return "GrpcNCLinkServiceClientImpl"
+	return "nCLinkServiceImpl"
 }
 
 func (u *GrpcNCLinkServiceImpl) GetDubboStub(cc *grpc.ClientConn) nclink.NCLinkServiceClient {

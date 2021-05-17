@@ -101,6 +101,10 @@ func (t *NCLinkCommonDevice) UpdateMeta(ctx context.Context, meta *nclink.NCLink
 	return
 }
 
+func (t *NCLinkCommonDevice) GetMeta() *nclink.NCLinkDevice {
+	return t.DeviceMeta
+}
+
 func (t *NCLinkCommonDevice) Shutdown() (err error) {
 	t.mu.Lock()
 	defer t.mu.Unlock()

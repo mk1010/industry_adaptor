@@ -104,6 +104,10 @@ func (ada *NCLinkCommonAdaptor) UpdateMeta(ctx context.Context, meta *nclink.NCL
 	return
 }
 
+func (ada *NCLinkCommonAdaptor) GetMeta() *nclink.NCLinkAdaptor {
+	return ada.AdaptorMeta
+}
+
 func (ada *NCLinkCommonAdaptor) Shutdown() (err error) {
 	ada.mu.Lock()
 	defer ada.mu.Unlock()
