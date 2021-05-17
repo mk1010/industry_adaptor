@@ -5,7 +5,7 @@ package nclink;
 
 service NCLinkService{
   rpc NCLinkAuth(NCLinkAuthReq) returns (NCLinkAuthResp);
-  rpc NCLinkSubscribe(NCLinkTopicSub) returns (stream NCLinkTopicMessage);
+  rpc NCLinkSubscribe(stream NCLinkTopicMessage) returns (stream NCLinkTopicMessage);
   rpc NCLinkSendData(NCLinkDataMessage) returns (NCLinkBaseResp);
   rpc NCLinkSendBasicData(NCLinkTopicMessage) returns (NCLinkBaseResp);
   rpc NCLinkGetMeta(NCLinkMetaDataReq) returns (NCLinkMetaDataResp);
@@ -18,8 +18,9 @@ message NCLinkTopicSub{
 }
 
 message NCLinkTopicMessage{
-  int32 message_kind =1;
-  NCLinkPayloads payload =2;
+  string message_id =1;
+  int32 message_kind =2;
+  NCLinkPayloads payload =3;
 }
 
 message NCLinkAuthReq {
@@ -141,7 +142,10 @@ enum data_kind{
   String =15;
 }
 
-enum adaptor_message_kind{
-  SetMeta =0;//payloads NCLinkMetaDataResp
-  GetMeta =1;//payloads NCLinkMetaDataReq
+enum nclink_command_message_kind{
+  Subscribe =0;//payloads Subscribe
+  UpdateMeta =10;//payloads NCLinkMetaDataResp
+  GetMeta =11;//payloads NCLinkMetaDataReq
+  Shutdown =12;//payloads NCLinkMetaDataReq
+  Restart =13;//payloads nil
 }
