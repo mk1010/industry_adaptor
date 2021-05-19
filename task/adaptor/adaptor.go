@@ -7,7 +7,6 @@ import (
 
 	"github.com/apache/dubbo-go/common/logger"
 	"github.com/mk1010/industry_adaptor/nclink"
-	"github.com/mk1010/industry_adaptor/nclink/util"
 	"github.com/mk1010/industry_adaptor/service"
 	"github.com/mk1010/industry_adaptor/task/common"
 	"github.com/mk1010/industry_adaptor/task/device"
@@ -41,9 +40,6 @@ func (ada *NCLinkCommonAdaptor) Start(ctx context.Context) (err error) {
 		logger.Error(err)
 		return
 	}
-	util.GoSafely(func() {
-		NcLinkCommandTopic(ctx, ada.AdaptorID)
-	}, nil)
 	ada.mu.Lock()
 	defer ada.mu.Unlock()
 	if ada.DeviceMap == nil {
@@ -52,7 +48,7 @@ func (ada *NCLinkCommonAdaptor) Start(ctx context.Context) (err error) {
 	for _, deviceMeta := range metaResp.Devices {
 		deviceAPI, err := device.DeviceInit(ctx, deviceMeta, ada.AdaptorID)
 		if err != nil {
-			return err
+			continue
 		}
 		ada.DeviceMap[deviceMeta.DeviceId] = deviceAPI
 	}

@@ -60,7 +60,15 @@ func DataInfoInit(ctx context.Context, adaptorID, deviceID, componentID string, 
 var kindDealFuncMap = make(map[nclink.DataKind]func(data *bytes.Buffer, b binary.ByteOrder) (interface{}, error))
 
 func init() {
+	kindDealFuncMap[nclink.DataKind_Int8] = getInt8
+	kindDealFuncMap[nclink.DataKind_Int16] = getInt16
 	kindDealFuncMap[nclink.DataKind_Int32] = getInt32
+	kindDealFuncMap[nclink.DataKind_Int64] = getInt64
+	kindDealFuncMap[nclink.DataKind_Uint8] = getUint8
+	kindDealFuncMap[nclink.DataKind_Uint16] = getUint16
+	kindDealFuncMap[nclink.DataKind_Uint32] = getUint32
+	kindDealFuncMap[nclink.DataKind_Uint64] = getUint64
+	kindDealFuncMap[nclink.DataKind_Float32] = getFloat32
 	kindDealFuncMap[nclink.DataKind_Float64] = getFloat64
 	kindDealFuncMap[nclink.DataKind_String] = getString
 }
@@ -83,8 +91,71 @@ func GetFiledValueBigEnd(kind nclink.DataKind, data *bytes.Buffer) (interface{},
 	return nil, err
 }
 
+/*DataKind_Bool       DataKind = 1
+DataKind_Int8       DataKind = 2
+DataKind_Int16      DataKind = 3
+DataKind_Int32      DataKind = 4
+DataKind_Int64      DataKind = 5
+DataKind_Uint       DataKind = 6
+DataKind_Uint8      DataKind = 7
+DataKind_Uint16     DataKind = 8
+DataKind_Uint32     DataKind = 9
+DataKind_Uint64     DataKind = 10
+DataKind_Float32    DataKind = 11
+DataKind_Float64    DataKind = 12
+DataKind_Complex64  DataKind = 13
+DataKind_Complex128 DataKind = 14
+DataKind_String     DataKind = 15*/
+func getInt8(data *bytes.Buffer, b binary.ByteOrder) (interface{}, error) {
+	var val int8
+	err := binary.Read(data, b, &val)
+	return val, err
+}
+
+func getInt16(data *bytes.Buffer, b binary.ByteOrder) (interface{}, error) {
+	var val int16
+	err := binary.Read(data, b, &val)
+	return val, err
+}
+
 func getInt32(data *bytes.Buffer, b binary.ByteOrder) (interface{}, error) {
 	var val int32
+	err := binary.Read(data, b, &val)
+	return val, err
+}
+
+func getInt64(data *bytes.Buffer, b binary.ByteOrder) (interface{}, error) {
+	var val int64
+	err := binary.Read(data, b, &val)
+	return val, err
+}
+
+func getUint8(data *bytes.Buffer, b binary.ByteOrder) (interface{}, error) {
+	var val uint8
+	err := binary.Read(data, b, &val)
+	return val, err
+}
+
+func getUint16(data *bytes.Buffer, b binary.ByteOrder) (interface{}, error) {
+	var val uint16
+	err := binary.Read(data, b, &val)
+	return val, err
+}
+
+func getUint32(data *bytes.Buffer, b binary.ByteOrder) (interface{}, error) {
+	var val uint32
+	err := binary.Read(data, b, &val)
+	return val, err
+}
+
+func getUint64(data *bytes.Buffer, b binary.ByteOrder) (interface{}, error) {
+	var val uint64
+	err := binary.Read(data, b, &val)
+	return val, err
+}
+
+func getFloat32(data *bytes.Buffer, b binary.ByteOrder) (interface{}, error) {
+	var val float32
 	err := binary.Read(data, b, &val)
 	return val, err
 }

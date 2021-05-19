@@ -12,6 +12,7 @@ import (
 	"github.com/mk1010/industry_adaptor/nclink"
 	"github.com/mk1010/industry_adaptor/nclink/util"
 	"github.com/mk1010/industry_adaptor/service"
+	"github.com/mk1010/industry_adaptor/task/common"
 )
 
 // 不同组件具有相同数据项类型，且可以对调用方法进行复用时，建议注册到该对象上。
@@ -149,6 +150,25 @@ func (n *NCLinkCommonDataInfo) Shutdown() (err error) {
 	n.once.Do(func() {
 		close(n.done)
 		n.sendTimeTicker.Stop()
+		common.NClinkInstanceMap.Range(func(key, value interface{}) bool {
+			if val, ok := value.(common.NCLinkInstanceAPI); ok {
+				val.RecvUnRegister(n.DeviceID, n.ComponentID, n.DataInfo.DataItem.DataItemId, n)
+			}
+			return true
+		})
+		util.GoSafely(func() {
+			for {
+				select {
+				case <-n.DataChan:
+					{
+					}
+				case <-time.After(1 * time.Second):
+					{
+						return
+					}
+				}
+			}
+		}, nil)
 	})
 	return nil
 }

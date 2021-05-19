@@ -59,6 +59,6 @@ type NCLinkDataInfoAPI interface {
 
 type NCLinkInstanceAPI interface {
 	SendData(msg *nclink.NCLinkTopicMessage) error
-	RecvRegister(deviceID, componentID, dataInfoID string, dataAPi NCLinkDataInfoAPI) error
-	RecvUnRegister(deviceID, componentID, dataInfoID string, dataAPi NCLinkDataInfoAPI) error
+	RecvRegister(deviceID, componentID, dataItemoID string, dataAPi NCLinkDataInfoAPI) error
+	RecvUnRegister(deviceID, componentID, dataItemoID string, dataAPi NCLinkDataInfoAPI) error
 }

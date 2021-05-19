@@ -17,6 +17,7 @@ import (
 	"unsafe"
 
 	"github.com/mk1010/industry_adaptor/nclink"
+	"github.com/mk1010/industry_adaptor/nclink/util"
 
 	"github.com/apache/dubbo-go/common/logger"
 	json "github.com/json-iterator/go"
@@ -258,6 +259,24 @@ func TestReadString(t *testing.T) {
 }
 
 func TestSlice(t *testing.T) {
-	i := []int32{0, 1, 2, 3}
-	t.Log(i[4:])
+	ch := make(chan string, 5)
+	ch <- "hello mk"
+	ch <- "hello mk1"
+	t.Log(time.Now())
+	util.GoSafely(func() {
+		for {
+			select {
+			case s := <-ch:
+				{
+					t.Log(s, time.Now())
+				}
+			case <-time.After(1 * time.Second):
+				{
+					t.Log("shutdown", time.Now())
+					return
+				}
+			}
+		}
+	}, nil)
+	time.Sleep(2 * time.Second)
 }

@@ -30,6 +30,7 @@ import (
 	"github.com/mk1010/industry_adaptor/handler"
 	"github.com/mk1010/industry_adaptor/service"
 	"github.com/mk1010/industry_adaptor/task"
+	"github.com/mk1010/industry_adaptor/task/topic"
 )
 
 // need to setup environment variable "CONF_CONSUMER_FILE_PATH" to "conf/client.yml" before run
@@ -42,6 +43,7 @@ func main() {
 		panic(err)
 	}
 	task.Init(context.Background())
+	topic.Init(context.Background())
 	// initSignal()
 	config.GracefulShutdownInit()
 }

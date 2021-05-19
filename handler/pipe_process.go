@@ -18,7 +18,7 @@ import (
 
 type NCLinkCommonProcess struct {
 	ProcessName   string
-	route         map[string]map[string]common.NCLinkDataInfoAPI
+	route         map[string]map[string]common.NCLinkDataInfoAPI // map[comonentID]map[dataitemID]common.NCLinkDataInfoAPI
 	routeMu       sync.Mutex
 	WriteChan     chan *nclink.NCLinkTopicMessage
 	CmdStdinPipe  io.WriteCloser
@@ -44,7 +44,7 @@ func (t *NCLinkCommonProcess) Start(ctx context.Context) error {
 				{
 					if !ok {
 						t.Restart()
-						return
+						continue
 					}
 					b, _ := jsoniter.Marshal(msg)
 					err := binary.Write(t.CmdStdinPipe, binary.BigEndian, int32(len(b)))
@@ -65,7 +65,7 @@ func (t *NCLinkCommonProcess) Start(ctx context.Context) error {
 					}
 					if retries >= 3 {
 						t.Restart()
-						return
+						continue
 					}
 				}
 			}
@@ -73,9 +73,9 @@ func (t *NCLinkCommonProcess) Start(ctx context.Context) error {
 	}, nil)
 	util.GoSafely(func() {
 		var err error
-		retries := 0
 		for {
 			haveRead := 0
+			retries := 0
 			var size int32
 			for haveRead != 4 && retries < 3 {
 				buf := make([]byte, 4)
@@ -99,7 +99,7 @@ func (t *NCLinkCommonProcess) Start(ctx context.Context) error {
 			}
 			if retries >= 3 {
 				t.Restart()
-				return
+				continue
 			}
 			deviceID, err := byteBuf.ReadString('\n')
 			if err != nil {
