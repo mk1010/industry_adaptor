@@ -25,9 +25,7 @@ import (
 	"time"
 
 	"github.com/apache/dubbo-go/common/logger"
-	"github.com/apache/dubbo-go/config"
 	_ "github.com/mk1010/industry_adaptor/bash"
-	"github.com/mk1010/industry_adaptor/handler"
 	"github.com/mk1010/industry_adaptor/service"
 	"github.com/mk1010/industry_adaptor/task"
 	"github.com/mk1010/industry_adaptor/task/topic"
@@ -39,13 +37,12 @@ func main() {
 	if err := service.Init(); err != nil {
 		panic(err)
 	}
-	if err := handler.Init(context.Background()); err != nil {
-		panic(err)
-	}
+	// if err := handler.Init(context.Background()); err != nil {
+	// panic(err)
+	// }
 	task.Init(context.Background())
 	topic.Init(context.Background())
-	// initSignal()
-	config.GracefulShutdownInit()
+	initSignal()
 }
 
 func initSignal() {

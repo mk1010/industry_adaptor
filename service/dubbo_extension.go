@@ -14,7 +14,7 @@ import (
 
 const (
 	// ConsistentHash consistent hash
-	NcLinkConsistentHash = "nclinkconsistenthash"
+	NcLinkConsistentHash = "nclinkConsistentHash"
 )
 
 var (
@@ -57,9 +57,10 @@ func (lb *NcLinkConsistentHashLoadBalance) Select(invokers []protocol.Invoker, i
 		} else {
 			historyInvoker := selector.selectInvoker
 			if historyInvoker.IsAvailable() {
-				targetInvoker := historyInvoker.GetUrl().Ip + ":" + historyInvoker.GetUrl().Port
+				targetIp := historyInvoker.GetUrl().Ip
+				targetPort := historyInvoker.GetUrl().Port
 				for _, invoker := range invokers {
-					if invoker.GetUrl().Ip+":"+invoker.GetUrl().Port == targetInvoker {
+					if invoker.GetUrl().Ip == targetIp && invoker.GetUrl().Port == targetPort {
 						selector.mutex.Lock()
 						selector.hashCode = hashCode
 						selector.selectInvoker = invoker

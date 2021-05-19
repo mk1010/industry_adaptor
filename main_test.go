@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
+	"os/exec"
 	"reflect"
 	"strings"
 	"testing"
@@ -234,7 +235,7 @@ func TestTimeOut(t *testing.T) {
 	json.Unmarshal([]byte(s), &deviceConfig)
 	t.Log(deviceConfig["4545"])
 	t.Log(func() string {
-		conn, err := net.Dial("udp", "8.8.0.8:53")
+		conn, err := net.Dial("udp", "8.8.8.8:53")
 		if err != nil {
 			logger.Error(err)
 			return ""
@@ -246,6 +247,8 @@ func TestTimeOut(t *testing.T) {
 		}
 		return s
 	}())
+	b, err := exec.Command("curl", "ident.me").Output()
+	t.Log(string(b), err)
 }
 
 func TestReadString(t *testing.T) {

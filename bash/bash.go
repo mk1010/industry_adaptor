@@ -27,9 +27,16 @@ func init() {
 	logger.InitLogger(zapLogConf)
 	logConf = "" // 释放内存
 	dubboConsumerConf := new(config.ConsumerConfig)
-	err = jsoniter.Unmarshal([]byte(consumerConf), dubboConsumerConf)
+	err = yaml.Unmarshal([]byte(consumerConf), dubboConsumerConf)
 	if err != nil {
 		panic(err)
+	}
+	if m, ok := dubboConsumerConf.ProtocolConf.(map[string]interface{}); ok {
+		intMap := make(map[interface{}]interface{})
+		for k, v := range m {
+			intMap[k] = v
+		}
+		dubboConsumerConf.ProtocolConf = intMap
 	}
 	config.SetConsumerConfig(*dubboConsumerConf)
 	consumerConf = ""

@@ -31,9 +31,79 @@ initialFields:
 `
 
 var consumerConf = `
-{
+# dubbo client yaml configure file
 
-}
+check: true
+# client
+request_timeout: "3s"
+# connect timeout
+connect_timeout: "3s"
+
+# application config
+application:
+  organization: "dubbo.io"
+  name: "nCLinkGrpcServer"
+  module: "nclink grpc server"
+  version: "0.0.1"
+  environment: "dev"
+
+# registry config
+registries:
+  "zk":
+    protocol: "zookeeper"
+    timeout: "3s"
+    address: "42.194.202.153:2181"
+    zone: "guangzhou"
+
+# reference config
+references:
+  "nCLinkServiceImpl":
+    registry: "zk"
+    protocol: "grpc"
+    interface: "com.github.mk.NCLinkService"
+    loadbalance: "random"
+    warmup: "100"
+    cluster: "failover"
+    methods:
+      - name: "NCLinkAuth"
+        retries: 1
+        loadbalance: "random"
+      - name: "NCLinkSubscribe"
+        retries: 0
+        loadbalance: "random"
+      - name: "NCLinkSendData"
+        retries: 1
+        loadbalance: "random"
+      - name: "NCLinkSendBasicData"
+        retries: 1
+        loadbalance: "random"
+      - name: "NCLinkGetMeta"
+        retries: 1
+        loadbalance: "random"
+
+# protocol config
+protocol_conf:
+  grpc:
+    reconnect_interval: 0
+    connection_number: 2
+    heartbeat_period: "5s"
+    session_timeout: "20s"
+    pool_size: 64
+    pool_ttl: 600
+    getty_session_param:
+      compress_encoding: false
+      tcp_no_delay: true
+      tcp_keep_alive: true
+      keep_alive_period: "120s"
+      tcp_r_buf_size: 262144
+      tcp_w_buf_size: 65536
+      pkg_rq_size: 1024
+      pkg_wq_size: 512
+      tcp_read_timeout: "1s"
+      tcp_write_timeout: "5s"
+      wait_timeout: "1s"
+      max_msg_len: 10240
+      session_name: "client"
 `
 
 var adaptor_conf = `
