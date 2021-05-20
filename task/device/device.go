@@ -122,8 +122,10 @@ func (t *NCLinkCommonDevice) Shutdown() (err error) {
 	// 先检查当前这个键值对是否被写入了，如果写入了那么就应该是被写入的值
 	// 如果没被写入 值应该是之前被删除的值
 	val, done := common.NCLinkDeviceMap.LoadAndDelete(t.DeviceID)
-	if done && val.(*NCLinkCommonDevice) != t {
-		common.NCLinkDeviceMap.LoadOrStore(t.DeviceID, val)
+	if done {
+		if v, ok := val.(*NCLinkCommonDevice); ok && v != t {
+			common.NCLinkDeviceMap.LoadOrStore(t.DeviceID, val)
+		}
 	}
 	return
 }

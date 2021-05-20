@@ -120,8 +120,10 @@ func (ada *NCLinkCommonAdaptor) Shutdown() (err error) {
 	// 先检查当前这个键值对是否被写入了，如果写入了那么就应该是被写入的值
 	// 如果没被写入 值应该是之前被删除的值
 	val, done := common.NCLinkAdaptorMap.LoadAndDelete(ada.AdaptorID)
-	if done && val.(*NCLinkCommonAdaptor) != ada {
-		common.NCLinkAdaptorMap.LoadOrStore(ada.AdaptorID, val)
+	if done {
+		if v, ok := val.(*NCLinkCommonAdaptor); ok && v != ada {
+			common.NCLinkAdaptorMap.LoadOrStore(ada.AdaptorID, val)
+		}
 	}
 	return
 }
