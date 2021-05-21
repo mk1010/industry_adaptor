@@ -121,7 +121,7 @@ func (ada *NCLinkCommonAdaptor) Shutdown() (err error) {
 	// 如果没被写入 值应该是之前被删除的值
 	val, done := common.NCLinkAdaptorMap.LoadAndDelete(ada.AdaptorID)
 	if done {
-		if v, ok := val.(*NCLinkCommonAdaptor); ok && v != ada {
+		if v, ok := val.(*NCLinkCommonAdaptor); !ok || v != ada {
 			common.NCLinkAdaptorMap.LoadOrStore(ada.AdaptorID, val)
 		}
 	}

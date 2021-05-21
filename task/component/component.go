@@ -108,7 +108,7 @@ func (t *NCLinkCommonComponent) Shutdown() (err error) {
 	}
 	val, done := common.NCLinkComponentMap.LoadAndDelete(t.DeviceID)
 	if done {
-		if v, ok := val.(*NCLinkCommonComponent); ok && v != t {
+		if v, ok := val.(*NCLinkCommonComponent); !ok || v != t {
 			common.NCLinkComponentMap.LoadOrStore(t.DeviceID, val)
 		}
 	}

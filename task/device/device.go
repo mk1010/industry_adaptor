@@ -123,7 +123,7 @@ func (t *NCLinkCommonDevice) Shutdown() (err error) {
 	// 如果没被写入 值应该是之前被删除的值
 	val, done := common.NCLinkDeviceMap.LoadAndDelete(t.DeviceID)
 	if done {
-		if v, ok := val.(*NCLinkCommonDevice); ok && v != t {
+		if v, ok := val.(*NCLinkCommonDevice); !ok || v != t {
 			common.NCLinkDeviceMap.LoadOrStore(t.DeviceID, val)
 		}
 	}
