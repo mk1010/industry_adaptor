@@ -167,6 +167,6 @@ func getFloat64(data *bytes.Buffer, b binary.ByteOrder) (interface{}, error) {
 }
 
 func getString(data *bytes.Buffer, b binary.ByteOrder) (interface{}, error) {
-	val, err := data.ReadString('\n')
+	val, err := data.ReadString('\x00')
 	return val, err
 }
