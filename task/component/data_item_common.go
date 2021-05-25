@@ -34,6 +34,24 @@ func DataInfoInit(ctx context.Context, adaptorID, deviceID, componentID string, 
 			}
 			return dataItem, nil
 		}
+	case "nclink_common_mock_data_item":
+		{
+			dataItem := &NCLinkDataInfoMock{
+				&NCLinkCommonDataInfo{
+					AdaptorID:   adaptorID,
+					DeviceID:    deviceID,
+					ComponentID: componentID,
+					DataInfo:    dataInfoMeta,
+					DataChan:    make(chan []byte, 10),
+					done:        make(chan struct{}),
+				},
+			}
+			err := dataItem.Start(ctx)
+			if err != nil {
+				return nil, err
+			}
+			return dataItem, nil
+		}
 		// 花里胡哨的还是算了
 	/*case "MethodRegisterExample":
 	methReg := reflect.ValueOf(NCLinkComponetMethods{})

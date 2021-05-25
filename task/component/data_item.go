@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"math/rand"
 	"sync"
 	"time"
 
@@ -127,6 +128,7 @@ func (n *NCLinkCommonDataInfo) SendData(data []byte) (err error) {
 	defer func() {
 		if e := recover(); e != nil {
 			err = fmt.Errorf("%v", e)
+			logger.Errorf("dataitem 收取数据失败 组件id:%s,数据项id:%s,data:%v", n.ComponentID, n.DataInfo.DataItem.DataItemId, data)
 		}
 	}()
 	n.DataChan <- data
@@ -171,4 +173,65 @@ func (n *NCLinkCommonDataInfo) Shutdown() (err error) {
 		}, nil)
 	})
 	return nil
+}
+
+type NCLinkDataInfoMock struct {
+	*NCLinkCommonDataInfo
+}
+
+func (n *NCLinkDataInfoMock) Start(ctx context.Context) error {
+	// 这里不做参数校验了 相信DataInfoInit
+	util.GoSafely(func() {
+		n.listen(ctx)
+	}, nil)
+	return nil
+}
+
+func (n *NCLinkDataInfoMock) listen(ctx context.Context) {
+	n.sendTimeTicker = time.NewTicker(time.Duration(n.DataInfo.SampleInfo.UploadPeriod) * time.Millisecond)
+	util.GoSafely(
+		func() {
+			n.sendData(ctx)
+		}, nil)
+	createDataTimeTicker := time.NewTicker(time.Duration(n.DataInfo.SampleInfo.SamplingPeriod) * time.Millisecond)
+	for {
+		select {
+		case <-createDataTimeTicker.C:
+			{
+				now := util.TimeToUnixMs(time.Now())
+				dataMap := make(map[string]interface{})
+				var val interface{}
+				for _, item := range n.DataInfo.DataItem.Items {
+					switch item.Kind {
+					case nclink.DataKind_Bool:
+						{
+							val = (rand.Int()&1 == 0)
+						}
+					case nclink.DataKind_Float64:
+						{
+							val = rand.Float64()
+						}
+					case nclink.DataKind_Int64:
+						{
+							val = rand.Int63()
+						}
+					}
+					dataMap[item.FiledName] = val
+				}
+				var payload []byte
+				_ = jsoniter.Unmarshal(payload, dataMap)
+				nclinkPayload := &nclink.NCLinkPayloads{
+					UnixTimeMs: now,
+					Payload:    payload,
+				}
+				n.mu.Lock()
+				n.dataPayloads = append(n.dataPayloads, nclinkPayload)
+				n.mu.Unlock()
+			}
+		case <-n.done:
+			{
+				return
+			}
+		}
+	}
 }

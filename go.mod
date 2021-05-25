@@ -3,6 +3,7 @@ module github.com/mk1010/industry_adaptor
 require (
 	github.com/StackExchange/wmi v0.0.0-20210224194228-fe8f1750fd46 // indirect
 	github.com/apache/dubbo-go v1.5.6
+	github.com/buger/jsonparser v0.0.0-20181115193947-bf1c66bbce23
 	github.com/dubbogo/gost v1.11.3 // indirect
 	github.com/glycerine/go-unsnap-stream v0.0.0-20210130063903-47dfef350d96 // indirect
 	github.com/go-ole/go-ole v1.2.5 // indirect
@@ -13,6 +14,7 @@ require (
 	github.com/gopherjs/gopherjs v0.0.0-20210202160940-bed99a852dfe // indirect
 	github.com/jinzhu/copier v0.2.8 // indirect
 	github.com/json-iterator/go v1.1.10
+	github.com/mailru/easyjson v0.0.0-20160728113105-d5b7844b561a
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mschoch/smat v0.2.0 // indirect
 	github.com/pelletier/go-toml v1.8.1 // indirect
