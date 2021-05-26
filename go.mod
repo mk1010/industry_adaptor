@@ -14,7 +14,6 @@ require (
 	github.com/gopherjs/gopherjs v0.0.0-20210202160940-bed99a852dfe // indirect
 	github.com/jinzhu/copier v0.2.8 // indirect
 	github.com/json-iterator/go v1.1.10
-	github.com/mailru/easyjson v0.0.0-20160728113105-d5b7844b561a
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/mschoch/smat v0.2.0 // indirect
 	github.com/pelletier/go-toml v1.8.1 // indirect
