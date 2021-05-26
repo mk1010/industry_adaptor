@@ -75,8 +75,11 @@ func (n *NCLinkCommonDataInfo) listen(ctx context.Context) {
 					}
 					dataMap[item.FiledName] = val
 				}
-				var payload []byte
-				_ = jsoniter.Unmarshal(payload, dataMap)
+				payload, err := jsoniter.Marshal(dataMap)
+				if err != nil {
+					logger.Errorf("数据json序列化失败 err:%v datamap:%v ", err, dataMap)
+					continue
+				}
 				nclinkPayload := &nclink.NCLinkPayloads{
 					UnixTimeMs: now,
 					Payload:    payload,
@@ -219,8 +222,11 @@ func (n *NCLinkDataInfoMock) listen(ctx context.Context) {
 					}
 					dataMap[item.FiledName] = val
 				}
-				var payload []byte
-				_ = jsoniter.Unmarshal(payload, dataMap)
+				payload, err := jsoniter.Marshal(dataMap)
+				if err != nil {
+					logger.Errorf("数据json序列化失败 err:%v datamap:%v ", err, dataMap)
+					continue
+				}
 				nclinkPayload := &nclink.NCLinkPayloads{
 					UnixTimeMs: now,
 					Payload:    payload,
