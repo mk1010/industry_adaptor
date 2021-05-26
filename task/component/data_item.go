@@ -106,6 +106,7 @@ func (n *NCLinkCommonDataInfo) sendData(ctx context.Context) {
 				resp := new(nclink.NCLinkBaseResp)
 				in := &nclink.NCLinkDataMessage{
 					DataId:      util.GetUuid(),
+					AdaptorId:   n.AdaptorID,
 					DeviceId:    n.DeviceID,
 					ComponentId: n.ComponentID,
 					DataItemId:  n.DataInfo.DataItem.DataItemId,
