@@ -283,3 +283,7 @@ func TestSlice(t *testing.T) {
 	}, nil)
 	time.Sleep(2 * time.Second)
 }
+
+func TestUUid(t *testing.T) {
+	t.Log(util.GetUuid(), len(util.GetUuid()))
+}

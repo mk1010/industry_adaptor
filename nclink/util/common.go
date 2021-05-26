@@ -65,6 +65,7 @@ func GetUuid() string {
 		if err == nil {
 			break
 		}
+
 	}
-	return fmt.Sprintf("%s%x", time.Now().Format(nclink.TimeFormatYYYYMMDDHHMMSSMMM), uuID)
+	return time.Now().Format(nclink.TimeFormatYYYYMMDDHHMMSSMMM) + uuID.String()
 }

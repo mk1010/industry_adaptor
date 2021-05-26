@@ -134,6 +134,6 @@ var adaptor_conf = `
     ],
     "env":"prod",
     "connect_method":"dubbo",
-    "adaptor_id":"ADA-23"
+    "adaptor_id":"ada_mock_23"
 }
 `
